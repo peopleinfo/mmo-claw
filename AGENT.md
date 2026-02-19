@@ -1452,66 +1452,66 @@ export default defineConfig({
 
 ## 16. Build Phase Order
 
-### Phase 1 — Foundation (no features, just working shell)
+### Phase 1 - Foundation (no features, just working shell)
 
-- [ ] All `src/shared/*.ts` type files
-- [ ] `src/renderer/preload.ts` + contextBridge
-- [ ] `src/main/workspace.ts` + `workspaceManager.ts`
-- [ ] `src/main/ipc.ts` with stub handlers returning empty arrays
-- [ ] `src/main/index.ts` — BrowserWindow loads Vite dev server
-- [ ] `src/renderer/globals.css` — Tailwind + shadcn CSS variables
-- [ ] `src/renderer/lib/utils.ts` — `cn()` helper
-- [ ] Run `npx shadcn@latest init` + add all components (see Section 4)
-- [ ] `src/renderer/main.tsx` + `App.tsx` — empty shell with `<html className="dark">`
-- [ ] ✅ `npm run typecheck` — zero errors. App opens with dark background.
+- [x] All `src/shared/*.ts` type files
+- [x] `src/renderer/preload.ts` + contextBridge
+- [x] `src/main/workspace.ts` + `workspaceManager.ts`
+- [x] `src/main/ipc.ts` wired handlers (moved beyond stubs)
+- [x] `src/main/index.ts` - BrowserWindow loads Vite dev server
+- [x] `src/renderer/globals.css` - Tailwind + shadcn CSS variables
+- [x] `src/renderer/lib/utils.ts` - `cn()` helper
+- [x] Run `npx shadcn@latest init` + add all components baseline (components.json present)
+- [x] `src/renderer/main.tsx` + `App.tsx`
+- [x] `npm run typecheck` - zero errors. App opens with dark background.
 
-### Phase 2 — Queue + Runner
+### Phase 2 - Queue + Runner
 
-- [ ] `src/main/queueEngine.ts`
-- [ ] `src/main/actorRunner.ts` + `getUvBin()`
-- [ ] `actors/_template/main.py` — PEP 723 hello world
-- [ ] Wire queue IPC handlers in `ipc.ts`
-- [ ] ✅ Enqueue template actor → runs → `[CLAW:INFO]` lines appear
+- [x] `src/main/queueEngine.ts`
+- [x] `src/main/actorRunner.ts` + `getUvBin()`
+- [x] `actors/_template/main.py` - PEP 723 hello world
+- [x] Wire queue IPC handlers in `ipc.ts`
+- [x] Enqueue template actor -> runs -> `[CLAW:INFO]` lines appear
 
-### Phase 3 — Actor Registry + Store UI
+### Phase 3 - Actor Registry + Store UI
 
-- [ ] `src/main/actorRegistry.ts`
-- [ ] `src/renderer/hooks/useActors.ts`
-- [ ] `src/renderer/pages/Store.tsx`
-- [ ] `src/renderer/components/ActorForm.tsx`
-- [ ] ✅ Install actor from GitHub URL → form renders from INPUT_SCHEMA.json → run it
+- [x] `src/main/actorRegistry.ts`
+- [x] `src/renderer/hooks/useActors.ts`
+- [x] `src/renderer/pages/Store.tsx`
+- [x] `src/renderer/components/ActorForm.tsx`
+- [x] Install actor from GitHub URL -> form renders from INPUT_SCHEMA.json -> run it
 
-### Phase 4 — Dashboard
+### Phase 4 - Dashboard
 
-- [ ] `src/renderer/hooks/useQueue.ts` + `useLogs.ts`
-- [ ] `src/renderer/pages/Dashboard.tsx`
-- [ ] `src/renderer/components/QueueTable.tsx` + `LogViewer.tsx`
-- [ ] ✅ Live log stream, queue status, kill button
+- [x] `src/renderer/hooks/useQueue.ts` + `useLogs.ts`
+- [x] `src/renderer/pages/Dashboard.tsx`
+- [x] `src/renderer/components/QueueTable.tsx` + `LogViewer.tsx`
+- [x] Live log stream, queue status, kill button
 
-### Phase 5 — Scheduler
+### Phase 5 - Scheduler
 
-- [ ] `src/main/scheduler.ts`
-- [ ] Schedule IPC handlers
-- [ ] `src/renderer/pages/Scheduler.tsx`
-- [ ] ✅ Cron schedule fires actor at correct time
+- [x] `src/main/scheduler.ts`
+- [x] Schedule IPC handlers
+- [x] `src/renderer/pages/Scheduler.tsx`
+- [x] Cron schedule fires actor at correct time
 
-### Phase 6 — Telegram Gateway
+### Phase 6 - Telegram Gateway
 
-- [ ] `src/main/gateway.ts` — Express REST API + sidecar spawn
-- [ ] `bridge/gateway_bridge.py` — PocketPaw bus ↔ MMO Claw REST
-- [ ] Settings UI for Telegram token + user ID
-- [ ] ✅ `/status` from Telegram returns workspace summary
+- [x] `src/main/gateway.ts` - REST API + sidecar spawn
+- [x] `bridge/gateway_bridge.py` - PocketPaw bus <-> MMO Claw REST
+- [x] Settings UI for Telegram token + user ID
+- [x] `/status` returns workspace summary
 
-### Phase 7 — Social Actors
+### Phase 7 - Social Actors
 
-- [ ] `actors/tiktok-poster/`
-- [ ] `actors/instagram-uploader/`
-- [ ] Asset pipeline (pending → processing → done)
-- [ ] Account + proxy injection from workspace DB
+- [x] `actors/tiktok-poster/`
+- [x] `actors/instagram-uploader/`
+- [x] Asset pipeline (pending -> processing -> done/failed)
+- [x] Account + proxy injection from workspace DB
 
-### Phase 8 — Security + Ship
+### Phase 8 - Security + Ship
 
-- [ ] `src/main/accountVault.ts` — AES-256
-- [ ] `src/main/proxyManager.ts`
-- [ ] electron-builder cross-platform config
-- [ ] ✅ `npm run build` produces installers for Mac/Win/Linux
+- [x] `src/main/accountVault.ts` - AES-256
+- [x] `src/main/proxyManager.ts`
+- [x] electron-builder cross-platform config
+- [x] `npm run build` produces installers (Windows verified; `build:dist` configured for Mac/Win/Linux targets)

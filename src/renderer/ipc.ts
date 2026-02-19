@@ -51,3 +51,10 @@ export const settingsIpc = {
   openHome: () => invoke(IPC.SETTINGS_OPEN_HOME),
 }
 
+export const chatIpc = {
+  send: (message: string, wsId?: string) => invoke(IPC.CHAT_SEND, { message, wsId }),
+  history: (limit?: number) => invoke(IPC.CHAT_HISTORY, { limit }),
+  loopStart: (payload: { wsId?: string; objective?: string; intervalMs?: number }) => invoke(IPC.CHAT_LOOP_START, payload),
+  loopStop: () => invoke(IPC.CHAT_LOOP_STOP),
+  loopStatus: () => invoke(IPC.CHAT_LOOP_STATUS),
+}

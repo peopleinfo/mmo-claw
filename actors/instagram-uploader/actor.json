@@ -1,0 +1,10 @@
+{
+  "name": "instagram-uploader",
+  "version": "0.1.0",
+  "title": "Instagram Uploader",
+  "description": "Demo actor that simulates posting queued assets to Instagram.",
+  "runtime": "python",
+  "entry": "main.py",
+  "category": "social",
+  "tags": ["instagram", "upload", "social"]
+}

@@ -8,6 +8,7 @@ import { WorkspaceManager } from './workspaceManager'
 
 let mainWindow: BrowserWindow | null = null
 let workspaceManager: WorkspaceManager | null = null
+let disposeIpc: (() => void) | null = null
 
 const APP_HOME = path.resolve(process.env.MMO_CLAW_HOME ?? path.join(os.homedir(), '.MMO Claw'))
 const CONFIG_PATH = path.join(APP_HOME, 'config.json')
@@ -66,9 +67,10 @@ async function bootstrap() {
   workspaceManager = new WorkspaceManager(workspaceHome)
   await workspaceManager.init()
 
-  registerIpcHandlers({
+  disposeIpc = registerIpcHandlers({
     workspaceManager,
     configPath: CONFIG_PATH,
+    appHome: APP_HOME,
   })
 
   createMainWindow()
@@ -94,5 +96,7 @@ app.on('window-all-closed', () => {
 })
 
 app.on('before-quit', () => {
+  disposeIpc?.()
+  disposeIpc = null
   void workspaceManager?.destroy()
 })
