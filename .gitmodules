@@ -1,10 +1,10 @@
 [submodule "vendor/pocketpaw"]
-    path = vendor/pocketpaw
-    url = https://github.com/pocketpaw/pocketpaw
-    branch = main
+	path = vendor/pocketpaw
+	url = https://github.com/pocketpaw/pocketpaw
+	branch = main
 
 [submodule "vendor/actor-scraper"]
-    path = vendor/actor-scraper
-    url = https://github.com/apify/actor-scraper
-    branch = master
+	path = vendor/actor-scraper
+	url = https://github.com/apify/actor-scraper
+	branch = master
 
