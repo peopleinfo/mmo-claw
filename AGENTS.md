@@ -2,8 +2,8 @@
 
 <INSTRUCTIONS>
 ## Baseline
-- Use `agent.md` as the operating contract.
-- Use `project-prd.md` for product direction and scope.
+- Use `docs/agent.md` as the operating contract.
+- Use `docs/project-prd.md` for product direction and scope.
 - Use `SKILLS.md` for skill policy and lifecycle.
 - Use `npx skills` as the canonical skill CLI.
 

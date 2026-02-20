@@ -7,7 +7,7 @@ description: Bootstrap Turborepo apps/packages structure and base tooling. Use f
 
 ## Inputs
 - Target package manager (`pnpm` default).
-- Initial app/package list from `project-prd.md`.
+- Initial app/package list from `docs/project-prd.md`.
 
 ## Workflow
 1. Create root workspace files (`package.json`, `turbo.json`, workspace config) and deterministic scripts for `dev`, `build`, `lint`, and `test`.

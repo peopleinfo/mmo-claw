@@ -1,0 +1,187 @@
+{
+  "version": 1,
+  "activeBoardId": "cd8f7052-29e2-4dff-b4dc-764a35e4526e",
+  "boards": [
+    {
+      "id": "2337226d-6b86-450e-bcb7-4f3a96fbcb2e",
+      "name": "Team Board",
+      "createdAt": "2025-12-30T17:49:08.475Z",
+      "updatedAt": "2025-12-30T17:49:08.475Z",
+      "lists": [
+        {
+          "id": "6fa2ebd7-ab2c-46c5-9ca2-1ba525feb72e", 
+          "name": "Backlog",
+          "createdAt": "2025-12-30T17:49:08.475Z",
+          "updatedAt": "2025-12-30T17:49:08.475Z",
+          "cards": []
+        },
+        {
+          "id": "63a784e0-098b-46b5-9369-feb54512cd1e",
+          "name": "Todo",
+          "createdAt": "2025-12-30T17:49:08.475Z",
+          "updatedAt": "2025-12-30T17:49:08.475Z",
+          "cards": []
+        },
+        {
+          "id": "555cc04a-6100-4145-990a-391d9f38cb4a",
+          "name": "In Progress",
+          "createdAt": "2025-12-30T17:49:08.475Z",
+          "updatedAt": "2025-12-30T17:49:08.475Z",
+          "cards": []
+        },
+        {
+          "id": "f4335126-1829-4464-9fbf-84fa737ee308",
+          "name": "Done",
+          "createdAt": "2025-12-30T17:49:08.475Z",
+          "updatedAt": "2025-12-30T17:49:08.475Z",
+          "cards": []
+        }
+      ]
+    },
+    {
+      "id": "cd8f7052-29e2-4dff-b4dc-764a35e4526e",
+      "name": "next-gen",
+      "type": "bmad",
+      "createdAt": "2026-01-01T19:14:02.816Z",
+      "updatedAt": "2026-02-18T16:07:07.878Z",
+      "lists": [
+        {
+          "id": "224fb2d2-6816-400e-b9c0-4159e03207d8",
+          "statusId": "ready-for-dev",
+          "name": "Ready for Dev",
+          "color": "#3b82f6",
+          "createdAt": "2026-01-01T19:14:02.816Z",
+          "updatedAt": "2026-02-03T17:05:08.787Z",
+          "cards": []
+        },
+        {
+          "id": "9ca87ea0-8969-4c7d-b72b-15c01e1ec68c",
+          "statusId": "in-progress",
+          "name": "In Progress",
+          "color": "#f59e0b",
+          "createdAt": "2026-01-01T19:14:02.816Z",
+          "updatedAt": "2026-02-03T17:05:06.644Z",
+          "cards": []
+        },
+        {
+          "id": "0c2c9859-fb49-4082-9d23-d1ef37c17089",
+          "statusId": "review",
+          "name": "Review",
+          "color": "#8b5cf6",
+          "createdAt": "2026-01-01T19:14:02.816Z",
+          "updatedAt": "2026-02-03T17:05:15.171Z",
+          "cards": []
+        }
+      ]
+    },
+    {
+      "id": "a16b3e87-c5c6-4b2b-9ccd-97626b05917f",
+      "name": "E2E Scrum 1771616354255",
+      "type": "bmad",
+      "createdAt": "2026-02-20T19:39:14.264Z",
+      "updatedAt": "2026-02-20T19:39:14.299Z",
+      "lists": [
+        {
+          "id": "dc62614b-40fc-49b2-8bbb-0827f57aad0e",
+          "statusId": "backlog",
+          "name": "Backlog",
+          "color": "#6b7280",
+          "createdAt": "2026-02-20T19:39:14.264Z",
+          "updatedAt": "2026-02-20T19:39:14.289Z",
+          "cards": []
+        },
+        {
+          "id": "09463f2e-5e16-4d68-89aa-c36a0e1c1dd0",
+          "statusId": "ready-for-dev",
+          "name": "Ready for Dev",
+          "color": "#3b82f6",
+          "createdAt": "2026-02-20T19:39:14.264Z",
+          "updatedAt": "2026-02-20T19:39:14.264Z",
+          "cards": []
+        },
+        {
+          "id": "31ea9704-0b21-4e7c-9017-fc762cd3618f",
+          "statusId": "in-progress",
+          "name": "In Progress",
+          "color": "#f59e0b",
+          "createdAt": "2026-02-20T19:39:14.264Z",
+          "updatedAt": "2026-02-20T19:39:14.299Z",
+          "cards": [
+            {
+              "id": "1",
+              "title": "E2E story",
+              "description": "Validate scrum workflow",
+              "assignee": "pm-user",
+              "points": 3,
+              "labels": [
+                "e2e",
+                "bmad"
+              ],
+              "epicId": null,
+              "sprintId": null,
+              "priority": "high",
+              "status": "in-progress",
+              "attachments": [],
+              "createdAt": "2026-02-20T19:39:14.279Z",
+              "updatedAt": "2026-02-20T19:39:14.299Z"
+            }
+          ]
+        },
+        {
+          "id": "f504d392-7013-49b7-8fc3-08e34fb40f06",
+          "statusId": "review",
+          "name": "Review",
+          "color": "#8b5cf6",
+          "createdAt": "2026-02-20T19:39:14.264Z",
+          "updatedAt": "2026-02-20T19:39:14.264Z",
+          "cards": []
+        },
+        {
+          "id": "a034d936-dbf8-460c-8afc-247e8e2bbded",
+          "statusId": "done",
+          "name": "Done",
+          "color": "#22c55e",
+          "createdAt": "2026-02-20T19:39:14.264Z",
+          "updatedAt": "2026-02-20T19:39:14.264Z",
+          "cards": []
+        }
+      ]
+    }
+  ],
+  "locks": {},
+  "stateVersion": 272,
+  "epics": [
+    {
+      "id": "1dfe3e68-ca84-4c2f-9ee3-e82f19252fbe",
+      "name": "Dev",
+      "description": "Dev",
+      "projectKey": "dev",
+      "status": "backlog",
+      "createdAt": "2026-01-03T09:08:34.219Z",
+      "updatedAt": "2026-01-03T19:54:21.833Z",
+      "sprintId": null
+    },
+    {
+      "id": "05998f29-2387-44eb-9cf1-f63bc7d586d4",
+      "name": "epic",
+      "description": "test",
+      "projectKey": "epic",
+      "status": "backlog",
+      "createdAt": "2026-01-03T09:31:18.190Z",
+      "updatedAt": "2026-01-03T09:31:19.905Z"
+    }
+  ],
+  "sprints": [
+    {
+      "id": "cbddb305-4719-4cd2-957c-2b087aafbe9c",
+      "name": "S1",
+      "goal": "",
+      "startDate": null,
+      "endDate": null,
+      "capacityPoints": null,
+      "status": "active",
+      "createdAt": "2026-01-03T15:55:03.584Z",
+      "updatedAt": "2026-01-03T15:55:58.340Z"
+    }
+  ]
+}

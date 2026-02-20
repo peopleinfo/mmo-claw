@@ -1,21 +1,10 @@
-# 🕹️ Project Draft v2 — AI-Driven Content Creator & MMO Automation Platform
+# 🏛️ Architecture — MMO Claw
 
-> **One-liner:** Self-hosted desktop app where content creators and MMO players run AI-driven browser actors, controllable 24/7 via Telegram, with anti-detect browsers, team profiles, and proxy management. Open source alternative to AdsPower + openclaw + Apify — combined, not rebuilt.
-
----
-
-## 🎯 Core Vision
-
-```
-Content creators run AI-driven browser actors
-controllable 24/7 via Telegram
-with anti-detect browser, team profiles & proxy management
-Python tools installable built-in — no technical setup required
-```
+> Source of truth for system structure, module boundaries, runtime behavior, and user-operational flows.
 
 ---
 
-## 🏗️ Monorepo Structure (Turborepo)
+## Monorepo Structure (Turborepo)
 
 ```
 your-app/  (Turborepo)
@@ -44,25 +33,12 @@ your-app/  (Turborepo)
 
 ---
 
-## 🧩 Layer by Layer
-
----
+## Layer by Layer
 
 ### Layer 1 — Desktop Shell
 **`apps/desktop/`**
 
-| Decision | Choice | Why |
-|---|---|---|
-| Framework | **Electron** | You know it, mature, cross-platform |
-| Build tool | **Vite** | Fast HMR, modern ESM |
-| UI | **React + shadcn/ui** | Component library ready, Radix primitives |
-| State | **Zustand** | Lightweight, no boilerplate vs Redux |
-| IPC bridge | **Electron IPC** (typed via `packages/ipc`) | Main ↔ renderer, fully typed contracts |
-| Keychain | **keytar** | OS keychain for API keys + tokens |
-| Local store | **electron-store** | App settings, window state |
-| Tray | **Electron system tray** | 24/7 background, minimize to tray |
-| Auto-launch | **electron-auto-launch** | Start on OS login |
-| Python runtime | **uv bundled binary** | Shipped inside Electron resources/ |
+This layer owns desktop orchestration, native OS integrations, and the renderer shell around the agent runtime.
 
 **What the Electron app does:**
 - Wraps PocketPaw fork web UI at `localhost:8888` in a BrowserWindow
@@ -225,7 +201,7 @@ Every IPC call has a TypeScript type contract. Renderer calls typed functions. M
 
 ---
 
-## 📱 UI Pages (Electron Renderer)
+## UI Pages (Electron Renderer)
 
 | Page | What it does | Data source |
 |---|---|---|
@@ -242,7 +218,7 @@ Every IPC call has a TypeScript type contract. Renderer calls typed functions. M
 
 ---
 
-## 🔄 User Flows
+## User Flows
 
 ### First Launch
 ```
@@ -285,107 +261,3 @@ Editor logs in with Casdoor SSO → sees only assigned profiles/actors
 Admin dashboard → all team runs, usage, schedules
 Role-based: editors run actors, only admin manages team/billing
 ```
-
----
-
-## 🗓️ Build Phases
-
-### Phase 0 — Monorepo Setup
-- Turborepo init
-- `apps/desktop` — Electron + Vite + React + shadcn + Zustand scaffold
-- `apps/pocketpaw` — fork and run locally
-- `packages/ipc`, `packages/db`, `packages/ui` scaffolded
-- Basic Electron window loads PocketPaw at :8888
-
-### Phase 1 — uvx Manager + Python Bundling
-- Bundle `uv` binary for all platforms in `resources/bin/`
-- `packages/uvx-manager` — install/run/uninstall via bundled uv
-- Install Camoufox via uvx-manager
-- Install PocketPaw fork via uvx-manager
-- Marketplace UI skeleton
-
-### Phase 2 — First Actor (Instagram Poster)
-- `packages/browser` — BrowserProvider abstraction
-- Camoufox provider wired
-- `packages/actors/instagram-poster` — Crawlee actor
-- PocketPaw skill wrapper
-- Full flow: Telegram → PocketPaw → skill → actor → Camoufox → post
-
-### Phase 3 — Profile + Proxy + Account CRUD
-- SQLite schema finalized
-- Profile Manager UI
-- Proxy Manager UI
-- Account Manager UI
-- Profile → Proxy → Browser context wiring
-
-### Phase 4 — Anti-Detect Full Stack
-- playwright-extra + stealth provider
-- fingerprint-suite integrated into BrowserPool
-- proxy-chain per-profile routing
-- Provider selection per actor
-
-### Phase 5 — Team + Auth
-- Casdoor SSO auth on PocketPaw fork REST API
-- Team Manager UI
-- Role-based access (admin/editor/viewer)
-- Multi-user SQLite (per-team data isolation)
-
-### Phase 6 — More Actors
-- TikTok Poster
-- YouTube Description Updater
-- Twitter/X Thread Poster
-- Facebook Group Poster
-- MMO Daily Task (generic + game-specific)
-- Content Queue manager
-
-### Phase 7 — Polish
-- Auto-update (electron-updater)
-- Onboarding wizard
-- Actor Marketplace with ratings/install counts
-- ClawHub skill references adapted for our format
-- Cross-platform packaging (dmg, exe, AppImage)
-
----
-
-## 📦 License Summary
-
-| Tool | License | Safe? |
-|---|---|---|
-| PocketPaw (fork) | MIT | ✅ |
-| Electron | MIT | ✅ |
-| Vite | MIT | ✅ |
-| React | MIT | ✅ |
-| shadcn/ui | MIT | ✅ |
-| Zustand | MIT | ✅ |
-| Crawlee | Apache 2.0 | ✅ |
-| apify/actor-scraper | Apache 2.0 | ✅ reference |
-| playwright-extra + stealth | MIT | ✅ |
-| puppeteer-extra + stealth | MIT | ✅ |
-| fingerprint-suite | Apache 2.0 | ✅ |
-| proxy-chain | Apache 2.0 | ✅ |
-| Camoufox | MIT | ✅ |
-| uv / uvx | MIT | ✅ |
-| better-sqlite3 | MIT | ✅ |
-| keytar | MIT | ✅ |
-| openai-agents-js | MIT | ✅ |
-| Turborepo | MIT | ✅ |
-| clawe | AGPL-3.0 | ❌ SKIP |
-
-> All core tools are MIT or Apache 2.0. Zero AGPL or GPL contamination.
-
----
-
-## 🏆 Why This Stack Wins
-
-| Concern | Answer |
-|---|---|
-| Not rebuilding everything | PocketPaw fork handles 80% of agent brain |
-| You know Electron | Desktop shell is your home turf |
-| No Python setup for users | uv binary bundled — Python included in app |
-| Anti-detect serious | Camoufox (Firefox) + playwright-extra (Chromium) + fingerprint-suite |
-| Actor extensibility | Apify actor pattern — anyone can write a skill |
-| No vendor lock-in | Fully local-first, SQLite, no cloud dependency |
-| No existing competitor | Commercial tools cost $30–200/month, none have AI agent or Telegram control |
-| Team support | Casdoor SSO + roles built into PocketPaw fork API |
-| Cross-platform | Electron + uv binary strategy covers macOS, Windows, Linux |
-

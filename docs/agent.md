@@ -2,19 +2,19 @@
 
 This repository is operated by AI agents first. Human work is prompt-level direction and review.
 
-Primary product intent lives in `project-prd.md`.
+Primary product intent lives in `docs/project-prd.md`.
 
 ## Mission
 
-Build and ship the platform in `project-prd.md` through small, reversible, test-backed slices.
+Build and ship the platform in `docs/project-prd.md` through small, reversible, test-backed slices.
 
 ## Source Of Truth
 
 Resolve conflicts in this order:
 
 1. Latest user instruction in chat.
-2. `project-prd.md`.
-3. `agent.md`.
+2. `docs/project-prd.md`.
+3. `docs/agent.md`.
 4. `SKILLS.md`.
 
 ## Execution Loop
@@ -51,7 +51,7 @@ A task is done only when all are true:
 
 1. Code is implemented and locally validated.
 2. Tests for changed behavior exist and pass.
-3. Relevant docs are updated (`agent.md`, `SKILLS.md`, skill docs, or feature docs).
+3. Relevant docs are updated (`docs/agent.md`, `SKILLS.md`, skill docs, or feature docs).
 4. Changes are committed and pushed (unless user says otherwise).
 
 ## Autonomous Decision Policy

@@ -6,7 +6,7 @@ description: Design and implement local-first SQLite schema, queries, and migrat
 # data-layer-sqlite
 
 ## Inputs
-- Table entities and relationships from `project-prd.md`.
+- Table entities and relationships from `docs/project-prd.md`.
 - Query paths required by UI and runtime services.
 
 ## Workflow
