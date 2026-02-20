@@ -1,0 +1,4 @@
+interface:
+  display_name: scrum-kanban-mcp
+  short_description: Operate scrum-kanban MCP for boards, stories, epics, sprints, BMAD docs, and scrum-state sync.
+  default_prompt: Use the scrum-kanban-mcp workflow to execute Scrum or BMAD board operations safely through MCP tools.

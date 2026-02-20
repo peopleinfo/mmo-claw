@@ -63,6 +63,7 @@ Create these first as separate skills:
 1. `ipc-contracts`: Typed Electron main/renderer contract design and evolution.
 2. `profile-proxy-crud`: Profile/proxy/account CRUD and assignment workflows.
 3. `telegram-control-flow`: Telegram command, authorization, dedupe, and status messaging.
+4. `scrum-kanban-mcp`: Scrum/BMAD MCP operations for board state, story flow, locks, sync, and artifact/context tools.
 
 ## Task Routing Priority
 
@@ -70,5 +71,6 @@ When multiple skills match:
 
 1. Security and secrets handling skills first.
 2. Build/runtime skills second.
-3. Feature/domain skills third.
-4. Packaging/release skills last.
+3. Workflow state skills (for example `scrum-kanban-mcp`) third when the task changes planning/scrum truth.
+4. Feature/domain skills fourth.
+5. Packaging/release skills last.
