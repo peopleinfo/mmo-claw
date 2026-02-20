@@ -1,0 +1,5 @@
+interface:
+  display_name: team-auth-jwt
+  short_description: Implement team role model and JWT auth middleware and policies. Use for multi-user access control and permission boundaries.
+  default_prompt: Use the team-auth-jwt workflow to complete this task.
+

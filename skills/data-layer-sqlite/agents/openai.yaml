@@ -1,0 +1,5 @@
+interface:
+  display_name: data-layer-sqlite
+  short_description: Design and implement local-first SQLite schema, queries, and migrations. Use for persistence and repository data contracts.
+  default_prompt: Use the data-layer-sqlite workflow to complete this task.
+

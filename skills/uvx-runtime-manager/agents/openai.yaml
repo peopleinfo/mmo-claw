@@ -1,0 +1,5 @@
+interface:
+  display_name: uvx-runtime-manager
+  short_description: Manage bundled uv and uvx runtime install/update/uninstall flows. Use for Python toolchain lifecycle and actor marketplace operations.
+  default_prompt: Use the uvx-runtime-manager workflow to complete this task.
+

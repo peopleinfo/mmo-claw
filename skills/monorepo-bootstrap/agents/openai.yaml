@@ -1,0 +1,5 @@
+interface:
+  display_name: monorepo-bootstrap
+  short_description: Bootstrap Turborepo apps/packages structure and base tooling. Use for initial repository setup and workspace wiring.
+  default_prompt: Use the monorepo-bootstrap workflow to complete this task.
+

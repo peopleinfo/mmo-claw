@@ -1,0 +1,5 @@
+interface:
+  display_name: actor-kit
+  short_description: Scaffold and implement actor modules with input schema, runtime wrapper, and logging contracts. Use for new automation actors.
+  default_prompt: Use the actor-kit workflow to complete this task.
+

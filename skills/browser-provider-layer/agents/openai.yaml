@@ -1,0 +1,5 @@
+interface:
+  display_name: browser-provider-layer
+  short_description: Implement browser provider abstraction with Camoufox and stealth engines, fingerprinting, and proxy assignment. Use for anti-detect runtime concerns.
+  default_prompt: Use the browser-provider-layer workflow to complete this task.
+

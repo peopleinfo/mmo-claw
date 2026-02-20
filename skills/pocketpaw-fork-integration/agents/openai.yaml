@@ -1,0 +1,5 @@
+interface:
+  display_name: pocketpaw-fork-integration
+  short_description: Integrate and extend PocketPaw fork runtime and API bridge. Use when wiring agent brain, daemon lifecycle, and web embedding.
+  default_prompt: Use the pocketpaw-fork-integration workflow to complete this task.
+

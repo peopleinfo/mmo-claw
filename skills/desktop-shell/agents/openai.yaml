@@ -1,0 +1,5 @@
+interface:
+  display_name: desktop-shell
+  short_description: Build Electron + Vite + React desktop shell with typed IPC bridge. Use for desktop foundation and shell features.
+  default_prompt: Use the desktop-shell workflow to complete this task.
+
