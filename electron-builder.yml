@@ -1,9 +1,0 @@
-appId: com.mmoclaw.desktop
-productName: MMO Claw
-directories:
-  output: release
-files:
-  - dist/**
-  - package.json
-asar: true
-

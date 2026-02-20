@@ -1,5 +1,0 @@
-[submodule "vendor/actor-scraper"]
-	path = vendor/actor-scraper
-	url = https://github.com/apify/actor-scraper
-	branch = master
-
