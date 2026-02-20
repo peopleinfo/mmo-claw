@@ -1,0 +1,5 @@
+# Local skill-link artifacts from `npx skills` project installs
+.agents/
+.agent/
+.trae/
+skills-lock.json
