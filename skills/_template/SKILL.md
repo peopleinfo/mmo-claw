@@ -1,9 +1,9 @@
 ---
-name: template-skill
-description: Replace with what this skill does and when to use it.
+name: template-internal
+description: Internal scaffold template for creating new project skills. Never activate for task execution.
 ---
 
-# template-skill
+# template-internal
 
 ## Workflow
 

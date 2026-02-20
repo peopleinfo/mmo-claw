@@ -1,0 +1,4 @@
+interface:
+  display_name: ipc-contracts
+  short_description: Define and enforce typed IPC contracts between Electron main and renderer. Use when adding or changing cross-process APIs.
+  default_prompt: Use the ipc-contracts workflow to implement or update IPC channels safely.

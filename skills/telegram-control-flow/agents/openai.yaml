@@ -1,0 +1,4 @@
+interface:
+  display_name: telegram-control-flow
+  short_description: Implement Telegram command routing, authorization, and run-status messaging for remote actor control. Use for Telegram-driven operations.
+  default_prompt: Use the telegram-control-flow workflow to implement secure remote command handling.

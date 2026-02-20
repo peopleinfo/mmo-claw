@@ -38,9 +38,9 @@ The `description` line must include trigger context so agents can decide when to
 
 ## Skill Lifecycle
 
-1. Create: `./skill.sh create <name> --desc "<description>"`
+1. Create: `npx -y skills init skills/<name>`.
 2. Implement: fill `SKILL.md` and add scripts/references/assets.
-3. Validate: `./skill.sh validate`
+3. Validate: `npx -y skills list`, then verify each skill has valid `name` + `description` frontmatter.
 4. Use on real tasks.
 5. Iterate when gaps are found.
 
@@ -57,6 +57,12 @@ Create these first as separate skills:
 7. `data-layer-sqlite`: SQLite schema and query layer.
 8. `team-auth-casdoor`: Team roles with Casdoor SSO policy.
 9. `release-packaging`: Build, signing, auto-update, and cross-platform packaging.
+
+## Additional Skills (Added via npx skills)
+
+1. `ipc-contracts`: Typed Electron main/renderer contract design and evolution.
+2. `profile-proxy-crud`: Profile/proxy/account CRUD and assignment workflows.
+3. `telegram-control-flow`: Telegram command, authorization, dedupe, and status messaging.
 
 ## Task Routing Priority
 

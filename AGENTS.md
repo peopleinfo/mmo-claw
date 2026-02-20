@@ -5,7 +5,19 @@
 - Use `agent.md` as the operating contract.
 - Use `project-prd.md` for product direction and scope.
 - Use `SKILLS.md` for skill policy and lifecycle.
-- Use `skill.sh` for create/list/validate actions.
+- Use `npx skills` as the canonical skill CLI.
+
+## Architecture Non-Negotiables
+- Modular-first always: organize by bounded domains/features, not by random file type sprawl.
+- Keep strict boundaries: each module exposes a small public API; do not import module internals from outside.
+- Enforce DRY: when logic repeats the second time, extract shared code into the right module/package.
+- Avoid god files: split large files by responsibility; prefer focused units over mixed concerns.
+- Keep dependency direction clean: UI -> application/services -> domain -> infrastructure/adapters.
+- Prefer composition over duplication; prefer reusable helpers over copy-paste variants.
+- Centralize cross-cutting concerns (logging, error mapping, config, auth guards, validation).
+- Require typed contracts at boundaries (IPC, API, DB repositories, provider interfaces).
+- For big-project maintainability, each feature must include: clear ownership, test points, and extension points.
+- If a requested change would break modularity/DRY, refactor structure first, then implement behavior.
 
 ## Skills
 A skill is a local instruction package in `skills/<skill-name>/SKILL.md`.
@@ -20,18 +32,23 @@ A skill is a local instruction package in `skills/<skill-name>/SKILL.md`.
 - data-layer-sqlite: Design and implement local-first SQLite schema, queries, and migrations. Use for persistence and repository data contracts. (file: `skills/data-layer-sqlite/SKILL.md`)
 - team-auth-casdoor: Implement team role model with Casdoor SSO and role policies. Use for multi-user access control and permission boundaries. (file: `skills/team-auth-casdoor/SKILL.md`)
 - release-packaging: Build signing, auto-update, and cross-platform packaging pipelines. Use for release readiness and distribution workflows. (file: `skills/release-packaging/SKILL.md`)
+- ipc-contracts: Define and enforce typed IPC contracts between Electron main and renderer. Use when adding or changing cross-process APIs. (file: `skills/ipc-contracts/SKILL.md`)
+- profile-proxy-crud: Implement profile, proxy, and account CRUD with assignment and validation flows. Use for profile management and proxy operations. (file: `skills/profile-proxy-crud/SKILL.md`)
+- telegram-control-flow: Implement Telegram command routing, authorization, and run-status messaging for remote actor control. Use for Telegram-driven operations. (file: `skills/telegram-control-flow/SKILL.md`)
 
 ### How to use skills
 - Trigger rules: Use a skill when the user names it (for example `$desktop-shell`) or the task clearly matches its description.
 - Multiple matches: Use the minimal set that covers the task; if two skills overlap, prioritize by `SKILLS.md` task routing order.
 - Progressive disclosure: Read `SKILL.md` first, then only open needed files under `references/`, `scripts/`, or `assets/`.
 - Execution preference: Prefer running or editing scripts in `scripts/` over rewriting large repeated logic in chat.
-- Validation: Run `bash ./skill.sh validate` after creating or updating skills.
+- Validation: Run `npx -y skills list` after creating or updating skills, then ensure each active skill has `name` and `description` frontmatter.
 - Missing/blocked: If a skill file is missing or incomplete, state the gap briefly and proceed with the best safe fallback.
 - Context hygiene: Avoid bulk-loading every skill file; load only what is required by the active task.
 
 ## Quick commands
-- List skills: `bash ./skill.sh list`
-- Validate skills: `bash ./skill.sh validate`
-- Create skill: `bash ./skill.sh create <name> --desc "<description>"`
+- List skills: `npx -y skills list`
+- Initialize skill: `npx -y skills init skills/<name>`
+- Find skills: `npx -y skills find <query>`
+- Check updates: `npx -y skills check`
+- Update skills: `npx -y skills update`
 </INSTRUCTIONS>

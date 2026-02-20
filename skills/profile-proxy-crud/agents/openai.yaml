@@ -1,0 +1,4 @@
+interface:
+  display_name: profile-proxy-crud
+  short_description: Implement profile, proxy, and account CRUD with assignment and validation flows. Use for profile management and proxy operations.
+  default_prompt: Use the profile-proxy-crud workflow to build or modify profile and proxy management features.

@@ -5,9 +5,25 @@ description: Design and implement local-first SQLite schema, queries, and migrat
 
 # data-layer-sqlite
 
+## Inputs
+- Table entities and relationships from `project-prd.md`.
+- Query paths required by UI and runtime services.
+
 ## Workflow
+1. Define schema and constraints first, then implement query modules per bounded context.
+2. Use forward-only migrations with deterministic ordering.
+3. Enforce referential integrity and unique constraints for team/profile/proxy mappings.
+4. Add typed repository methods instead of ad hoc inline SQL usage.
+5. Wrap multi-step writes in transactions and define rollback behavior.
+6. Add seed/dev fixture helpers for local testing without production coupling.
+7. Version schema changes and document migration impact.
 
-1. Add concrete execution steps for this skill.
-2. Add deterministic scripts in `scripts/` when repetition exists.
-3. Keep detailed docs in `references/`.
+## Validation
+- Run migration from empty DB to latest.
+- Run migration on existing DB snapshot.
+- Verify key queries for profiles, proxies, runs, and schedules.
 
+## Done Criteria
+- Schema supports all current features without manual patching.
+- Migration pipeline is repeatable.
+- Query layer is typed and testable.
