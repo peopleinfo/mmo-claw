@@ -79,7 +79,7 @@ your-app/  (Turborepo)
 **Why fork instead of just running it?**
 - Add custom skill auto-discovery from `packages/actors`
 - Add profile + proxy context injection into every skill run
-- Add team auth (JWT) layer on top of the REST API
+- Add team auth via Casdoor SSO integration layer on top of the REST API
 - Customize the web dashboard to embed your CRUD pages
 - Ship it bundled and runnable via the uvx-manager
 
@@ -98,7 +98,7 @@ your-app/  (Turborepo)
 | Web dashboard | ✅ → extended with your pages |
 
 **What you add to the fork:**
-- JWT team auth middleware on the REST API
+- Casdoor SSO auth middleware on the REST API
 - Profile + proxy context passed to every skill at runtime
 - Custom skill registry that reads from `skills/` directory
 - Actor run status pushed to Electron via WebSocket events
@@ -237,7 +237,7 @@ Every IPC call has a TypeScript type contract. Renderer calls typed functions. M
 | **Marketplace** | Browse/install/update/uninstall actors | uvx-manager via IPC |
 | **Schedule** | View/create/edit scheduled actor runs | PocketPaw cron + SQLite |
 | **Runs** | Actor run history, logs, screenshots | SQLite via IPC |
-| **Team** | Invite members, manage roles, JWT auth | SQLite + JWT via IPC |
+| **Team** | Invite members, manage roles, Casdoor SSO | SQLite + Casdoor via IPC |
 | **Settings** | API keys (keychain), LLM provider, Telegram token | keytar via IPC |
 
 ---
@@ -281,7 +281,7 @@ User: "Post my TikTok draft now"
 ### Team Flow
 ```
 Admin creates team → invites editors via email
-Editor logs in with JWT → sees only assigned profiles/actors
+Editor logs in with Casdoor SSO → sees only assigned profiles/actors
 Admin dashboard → all team runs, usage, schedules
 Role-based: editors run actors, only admin manages team/billing
 ```
@@ -325,7 +325,7 @@ Role-based: editors run actors, only admin manages team/billing
 - Provider selection per actor
 
 ### Phase 5 — Team + Auth
-- JWT auth on PocketPaw fork REST API
+- Casdoor SSO auth on PocketPaw fork REST API
 - Team Manager UI
 - Role-based access (admin/editor/viewer)
 - Multi-user SQLite (per-team data isolation)
@@ -386,5 +386,6 @@ Role-based: editors run actors, only admin manages team/billing
 | Actor extensibility | Apify actor pattern — anyone can write a skill |
 | No vendor lock-in | Fully local-first, SQLite, no cloud dependency |
 | No existing competitor | Commercial tools cost $30–200/month, none have AI agent or Telegram control |
-| Team support | JWT + roles built into PocketPaw fork API |
+| Team support | Casdoor SSO + roles built into PocketPaw fork API |
 | Cross-platform | Electron + uv binary strategy covers macOS, Windows, Linux |
+

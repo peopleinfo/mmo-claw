@@ -55,7 +55,7 @@ Create these first as separate skills:
 5. `browser-provider-layer`: Camoufox, stealth providers, fingerprint + proxy flow.
 6. `actor-kit`: Actor template, schema, runtime wrapper, and run logging.
 7. `data-layer-sqlite`: SQLite schema and query layer.
-8. `team-auth-jwt`: Team roles and JWT policy.
+8. `team-auth-casdoor`: Team roles with Casdoor SSO policy.
 9. `release-packaging`: Build, signing, auto-update, and cross-platform packaging.
 
 ## Task Routing Priority

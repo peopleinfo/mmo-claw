@@ -1,9 +1,8 @@
----
-name: team-auth-jwt
-description: Implement team role model and JWT auth middleware and policies. Use for multi-user access control and permission boundaries.
+name: team-auth-casdoor
+description: Implement team role model with Casdoor SSO and role policies. Use for multi-user access control and permission boundaries.
 ---
 
-# team-auth-jwt
+# team-auth-casdoor
 
 ## Workflow
 

@@ -18,7 +18,7 @@ A skill is a local instruction package in `skills/<skill-name>/SKILL.md`.
 - browser-provider-layer: Implement browser provider abstraction with Camoufox and stealth engines, fingerprinting, and proxy assignment. Use for anti-detect runtime concerns. (file: `skills/browser-provider-layer/SKILL.md`)
 - actor-kit: Scaffold and implement actor modules with input schema, runtime wrapper, and logging contracts. Use for new automation actors. (file: `skills/actor-kit/SKILL.md`)
 - data-layer-sqlite: Design and implement local-first SQLite schema, queries, and migrations. Use for persistence and repository data contracts. (file: `skills/data-layer-sqlite/SKILL.md`)
-- team-auth-jwt: Implement team role model and JWT auth middleware and policies. Use for multi-user access control and permission boundaries. (file: `skills/team-auth-jwt/SKILL.md`)
+- team-auth-casdoor: Implement team role model with Casdoor SSO and role policies. Use for multi-user access control and permission boundaries. (file: `skills/team-auth-casdoor/SKILL.md`)
 - release-packaging: Build signing, auto-update, and cross-platform packaging pipelines. Use for release readiness and distribution workflows. (file: `skills/release-packaging/SKILL.md`)
 
 ### How to use skills
