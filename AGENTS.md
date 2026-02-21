@@ -3,9 +3,18 @@
 <INSTRUCTIONS>
 ## Baseline
 - Use `docs/agent.md` as the operating contract.
+- Use `docs/workflow.md` for Kanban stage flow and delivery gates.
 - Use `docs/project-prd.md` for product direction and scope.
 - Use `SKILLS.md` for skill policy and lifecycle.
 - Use `npx skills` as the canonical skill CLI.
+
+## Document Precedence
+
+- Latest user instruction in chat.
+- `docs/agent.md` for execution contract.
+- `docs/workflow.md` for story lifecycle and stage gates.
+- `docs/project-prd.md` for scope and product intent.
+- `SKILLS.md` for skill routing and usage.
 
 ## Architecture Non-Negotiables
 
