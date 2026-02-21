@@ -47,6 +47,9 @@ importers:
       '@mmo-claw/ipc':
         specifier: workspace:*
         version: link:../../packages/ipc
+      '@mmo-claw/pocketpaw':
+        specifier: workspace:*
+        version: link:../pocketpaw
       '@mmo-claw/uvx-manager':
         specifier: workspace:*
         version: link:../../packages/uvx-manager

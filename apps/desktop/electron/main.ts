@@ -15,6 +15,8 @@ let tray: Tray | null = null;
 let pocketpawBridge: PocketpawBridge | null = null;
 let pocketpawDaemonManager: PocketpawDaemonManager | null = null;
 let isQuitting = false;
+const pocketpawDaemonDisabled =
+  process.env.MMO_CLAW_DISABLE_POCKETPAW_DAEMON === "1";
 
 const formatDaemonState = (state: PocketpawDaemonState): string => {
   if (state === "running") {
@@ -159,17 +161,19 @@ app.on("second-instance", () => {
 });
 
 app.whenReady().then(() => {
-  pocketpawDaemonManager = createPocketpawDaemonManager({
-    baseDirectory: app.getAppPath(),
-    uvBinaryPath: app.isPackaged ? undefined : "uv",
-  });
-  pocketpawDaemonManager.setStatusListener(() => {
-    updateTrayPresentation();
-  });
-  void pocketpawDaemonManager.start();
+  if (!pocketpawDaemonDisabled) {
+    pocketpawDaemonManager = createPocketpawDaemonManager({
+      baseDirectory: app.getAppPath(),
+      uvBinaryPath: app.isPackaged ? undefined : "uv",
+    });
+    pocketpawDaemonManager.setStatusListener(() => {
+      updateTrayPresentation();
+    });
+    void pocketpawDaemonManager.start();
+  }
 
   pocketpawBridge = registerDesktopIpcHandlers({
-    pocketpawDaemonManager,
+    pocketpawDaemonManager: pocketpawDaemonManager ?? undefined,
   });
   mainWindow = createMainWindow();
   createTray();

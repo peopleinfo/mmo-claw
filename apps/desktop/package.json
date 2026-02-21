@@ -17,6 +17,7 @@
   "dependencies": {
     "@mmo-claw/db": "workspace:*",
     "@mmo-claw/ipc": "workspace:*",
+    "@mmo-claw/pocketpaw": "workspace:*",
     "@mmo-claw/uvx-manager": "workspace:*",
     "@radix-ui/react-checkbox": "^1.3.3",
     "@radix-ui/react-dialog": "^1.1.15",

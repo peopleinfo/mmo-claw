@@ -85,9 +85,10 @@ function teardownPocketpawView(): void {
 const checkPocketpawReachable = async (baseUrl: string): Promise<boolean> => {
   const controller = new AbortController();
   const timeout = setTimeout(() => controller.abort(), 1500);
+  const healthUrl = new URL("/api/v1/health", `${baseUrl}/`).toString();
 
   try {
-    const response = await fetch(baseUrl, { signal: controller.signal });
+    const response = await fetch(healthUrl, { signal: controller.signal });
     return response.ok;
   } catch {
     return false;

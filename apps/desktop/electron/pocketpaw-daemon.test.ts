@@ -6,6 +6,7 @@ class FakeManagedProcess {
   public readonly pid: number;
   public killed = false;
   private closeListener: ((...args: unknown[]) => void) | null = null;
+  private errorListener: ((...args: unknown[]) => void) | null = null;
 
   public constructor(pid: number) {
     this.pid = pid;
@@ -16,14 +17,24 @@ class FakeManagedProcess {
     this.emitClose();
   }
 
-  public once(event: "close", listener: (...args: unknown[]) => void): void {
+  public once(
+    event: "close" | "error",
+    listener: (...args: unknown[]) => void,
+  ): void {
     if (event === "close") {
       this.closeListener = listener;
+      return;
     }
+
+    this.errorListener = listener;
   }
 
   public emitClose(): void {
     this.closeListener?.(0, null);
+  }
+
+  public emitError(error: Error): void {
+    this.errorListener?.(error);
   }
 }
 
@@ -127,6 +138,45 @@ describe("pocketpaw daemon manager", () => {
 
     expect(processes.length).toBeGreaterThanOrEqual(2);
     expect(manager.getStatus().pid).toBe(processes[1]?.pid ?? null);
+
+    await manager.stop();
+  });
+
+  it("handles daemon process error events and recovers", async () => {
+    const processes: FakeManagedProcess[] = [];
+    const statusMessages: string[] = [];
+    const healthchecks = [false, false, true, false, true];
+    const manager = createPocketpawDaemonManager({
+      baseDirectory: "C:\\repo",
+      uvBinaryPath: "C:\\repo\\resources\\bin\\uv.exe",
+      uvBinaryExists: () => true,
+      healthcheck: async () => healthchecks.shift() ?? true,
+      startupRetryDelayMs: 2,
+      startupMaxAttempts: 4,
+      monitorIntervalMs: 100_000,
+      restartDelayMs: 1,
+      spawnProcess: () => {
+        const next = new FakeManagedProcess(processes.length + 1);
+        processes.push(next);
+        return next;
+      },
+    });
+    manager.setStatusListener((status) => {
+      statusMessages.push(status.message);
+    });
+
+    await manager.start();
+    expect(processes.length).toBe(1);
+    expect(manager.getStatus().state).toBe("running");
+
+    processes[0]?.emitError(new Error("spawn uv ENOENT"));
+
+    await waitFor(() =>
+      statusMessages.some((message) => message.includes("spawn uv ENOENT")),
+    );
+    await waitFor(() => {
+      return processes.length >= 2 && manager.getStatus().state === "running";
+    });
 
     await manager.stop();
   });

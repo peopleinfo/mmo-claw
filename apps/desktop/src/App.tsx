@@ -9,6 +9,7 @@ import { PagePlaceholder } from "./components/page-placeholder";
 import { PocketpawView } from "./components/pocketpaw-view";
 import { RunsPanel } from "./components/runs-panel";
 import { SettingsPanel } from "./components/settings-panel";
+import { POCKETPAW_VIEW_URL } from "./lib/pocketpaw";
 import { desktopPages } from "./lib/pages";
 import { useRunStore } from "./store/use-run-store";
 import { useShellStore } from "./store/use-shell-store";
@@ -95,7 +96,7 @@ const ChatPage = (): JSX.Element => {
           <UI.Button
             onClick={() =>
               void window.desktopApi.openPocketpaw({
-                baseUrl: "http://127.0.0.1:8888",
+                baseUrl: POCKETPAW_VIEW_URL,
               })
             }
           >

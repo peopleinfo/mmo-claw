@@ -34,11 +34,20 @@ export const createPocketpawSupervisor = (
       }
 
       const uvBinary = resolveBundledUvBinaryPath(baseDirectory);
-      // Run from the upstream submodule source in API-only mode (no dashboard).
-      // `uv run pocketpaw serve` starts the FastAPI server at /api/v1/
-      const processHandle = spawn(uvBinary, ["run", "pocketpaw", "serve"], {
-        cwd: upstreamDir,
-      });
+      // Run from the upstream submodule source in dashboard mode so frontend
+      // assets are served from `/` for embedded desktop views.
+      const processHandle = spawn(
+        uvBinary,
+        ["run", "pocketpaw", "--host", "127.0.0.1", "--port", "8888"],
+        {
+          cwd: upstreamDir,
+          env: {
+            ...process.env,
+            PYTHONUTF8: "1",
+            PYTHONIOENCODING: "utf-8",
+          },
+        },
+      );
 
       currentHandle = {
         process: processHandle,

@@ -1,9 +1,11 @@
 import fs from "node:fs";
+import path from "node:path";
 import { spawn } from "node:child_process";
 
 import { resolveBundledUvBinaryPath } from "@mmo-claw/uvx-manager";
+import { POCKETPAW_FORK_MANIFEST } from "@mmo-claw/pocketpaw";
 
-const DEFAULT_HEALTH_URL = "http://127.0.0.1:8888";
+const DEFAULT_HEALTH_URL = `${POCKETPAW_FORK_MANIFEST.localServiceUrl}/api/v1/health`;
 
 export type PocketpawDaemonState =
   | "idle"
@@ -26,7 +28,10 @@ export interface PocketpawDaemonStatus {
 interface ManagedPocketpawProcess {
   pid?: number;
   kill: () => void;
-  once: (event: "close", listener: (...args: unknown[]) => void) => void;
+  once: (
+    event: "close" | "error",
+    listener: (...args: unknown[]) => void,
+  ) => void;
 }
 
 export interface PocketpawDaemonManagerOptions {
@@ -81,6 +86,20 @@ const createPocketpawHealthcheck = (
   };
 };
 
+const resolvePocketpawCommandCwd = (baseDirectory: string): string => {
+  const upstreamPath = POCKETPAW_FORK_MANIFEST.upstreamSubmodulePath;
+  const candidates = [
+    path.resolve(baseDirectory, upstreamPath),
+    path.resolve(baseDirectory, "..", "pocketpaw", upstreamPath),
+    path.resolve(baseDirectory, "..", "..", "pocketpaw", upstreamPath),
+  ];
+
+  const existingCandidate = candidates.find((candidatePath) =>
+    fs.existsSync(candidatePath),
+  );
+  return existingCandidate ?? baseDirectory;
+};
+
 export const createPocketpawDaemonManager = (
   options: PocketpawDaemonManagerOptions,
 ): PocketpawDaemonManager => {
@@ -103,6 +122,11 @@ export const createPocketpawDaemonManager = (
         cwd,
         stdio: "ignore",
         windowsHide: true,
+        env: {
+          ...process.env,
+          PYTHONUTF8: "1",
+          PYTHONIOENCODING: "utf-8",
+        },
       });
       processHandle.unref();
       return processHandle;
@@ -169,7 +193,7 @@ export const createPocketpawDaemonManager = (
     }, delayMs);
   };
 
-  const handleManagedProcessClose = (
+  const attachManagedProcessListeners = (
     processHandle: ManagedPocketpawProcess,
   ): void => {
     processHandle.once("close", () => {
@@ -185,6 +209,32 @@ export const createPocketpawDaemonManager = (
       emitStatus({
         state: "retrying",
         message: "PocketPaw daemon exited. Restart policy is active.",
+        reachable: false,
+        managedProcess: false,
+        pid: null,
+      });
+      clearMonitor();
+      scheduleRecovery(0);
+    });
+
+    processHandle.once("error", (error) => {
+      if (managedProcess !== processHandle) {
+        return;
+      }
+
+      managedProcess = null;
+      if (!isRunning) {
+        return;
+      }
+
+      const reason =
+        error instanceof Error && error.message
+          ? error.message
+          : "PocketPaw daemon process failed to start.";
+
+      emitStatus({
+        state: "error",
+        message: `PocketPaw daemon process error: ${reason}`,
         reachable: false,
         managedProcess: false,
         pid: null,
@@ -211,13 +261,16 @@ export const createPocketpawDaemonManager = (
     }
 
     try {
+      const commandCwd = resolvePocketpawCommandCwd(options.baseDirectory);
+      // Launch dashboard mode so the embedded WebContentsView can render
+      // PocketPaw frontend assets from `/`.
       const processHandle = spawnProcess(
         uvBinaryPath,
-        ["tool", "run", "pocketpaw"],
-        options.baseDirectory,
+        ["run", "pocketpaw", "--host", "127.0.0.1", "--port", "8888"],
+        commandCwd,
       );
       managedProcess = processHandle;
-      handleManagedProcessClose(processHandle);
+      attachManagedProcessListeners(processHandle);
       return true;
     } catch (error) {
       emitStatus({

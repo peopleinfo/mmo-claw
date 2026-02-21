@@ -13,6 +13,10 @@ const resolveAlias = {
     __dirname,
     "../../packages/uvx-manager/src/index.ts",
   ),
+  "@mmo-claw/pocketpaw": path.resolve(
+    __dirname,
+    "../pocketpaw/src/fork-manifest.ts",
+  ),
 };
 
 export default defineConfig({
