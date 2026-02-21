@@ -19,8 +19,37 @@ export {
   type SkillId,
 } from "./skills/registry";
 export {
-  executeTelegramFlow,
+  executeUnifiedCommand,
+  type UnifiedCommandRouterDependencies,
+} from "./command-router/router";
+export {
+  commandErrorCodeSchema,
+  commandSourceSchema,
+  unifiedCommandRequestSchema,
+  type CommandErrorCode,
+  type CommandExecutionError,
+  type CommandSource,
+  type NormalizedSkillCommand,
+  type UnifiedCommandFailure,
+  type UnifiedCommandRequest,
+  type UnifiedCommandResult,
+  type UnifiedCommandSuccess,
+} from "./command-router/contracts";
+export {
+  instagramCommandUsageMessage,
+  parseInstagramCommandForSource,
   parseTelegramInstagramCommand,
+  type ParsedInstagramCommand,
+  type ParsedInstagramCommandPayload,
+} from "./command-router/instagram-command-parser";
+export {
+  executeDrawerFlow,
+  type DrawerCommand,
+  type DrawerFlowDependencies,
+  type DrawerFlowResult,
+} from "./drawer-flow";
+export {
+  executeTelegramFlow,
   type TelegramCommand,
   type TelegramFlowDependencies,
   type TelegramFlowResult,

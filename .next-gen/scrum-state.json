@@ -43,31 +43,157 @@
       "name": "next-gen",
       "type": "bmad",
       "createdAt": "2026-01-01T19:14:02.816Z",
-      "updatedAt": "2026-02-21T05:33:53.163Z",
+      "updatedAt": "2026-02-21T07:43:36.479Z",
       "lists": [
+        {
+          "id": "c48ee488-2cbe-47c9-a8a9-6832cbf2858c",
+          "statusId": "backlog",
+          "name": "Backlog",
+          "color": "#6b7280",
+          "createdAt": "2026-02-21T07:38:30.726Z",
+          "updatedAt": "2026-02-21T07:40:43.817Z",
+          "cards": [
+            {
+              "id": "31",
+              "title": "packages/ui: enforce shadcn-first contribution guardrails",
+              "description": "Problem/Context:\nWithout explicit guardrails, future component work may reintroduce custom rewrites instead of reusing shadcn primitives.\n\nScope Boundaries:\n- In scope: add `packages/ui` contribution guidance and checklist that mandates shadcn-first component additions.\n- In scope: add lightweight automated checks (lint/script/test) to catch direct duplication/rewrite patterns for existing shadcn primitives.\n- Out of scope: external design system tooling (Storybook rollout, visual diff platform setup).\n\nAcceptance Criteria:\n1. Repo docs include a clear `packages/ui` rule: use shadcn primitives/components; do not hand-rewrite equivalents.\n2. A CI-checkable command exists and fails when forbidden duplication patterns are introduced.\n3. Guardrails are referenced in developer workflow docs for UI changes.\n4. All new checks pass on current codebase.\n\nSuccess Metrics:\n- 1 documented policy section for shadcn-first UI contribution.\n- 1 automated check integrated into package or repo scripts.\n\nTest Plan:\n- Unit: verify guard script rules with pass/fail fixtures where practical.\n- Integration: run guard command in CI/local workflow.\n- E2E: N/A.\n\nOut-of-Scope:\n- Complete visual regression infrastructure.",
+              "assignee": "",
+              "points": 3,
+              "labels": [
+                "ui",
+                "shadcn",
+                "packages-ui"
+              ],
+              "epicId": "17e775ea-7307-4a21-b06e-8fb94605a91e",
+              "sprintId": null,
+              "priority": "medium",
+              "status": "backlog",
+              "attachments": [],
+              "createdAt": "2026-02-21T07:39:52.448Z",
+              "updatedAt": "2026-02-21T07:39:52.448Z"
+            },
+            {
+              "id": "30",
+              "title": "packages/ui: add consumer smoke harness for shadcn exports",
+              "description": "Problem/Context:\n`@mmo-claw/ui` needs a repeatable consumer-level check to ensure exported shadcn components work in downstream apps and discourage local rewrites.\n\nScope Boundaries:\n- In scope: add package-level integration smoke harness that imports exported primitives from `@mmo-claw/ui` in a consumer fixture.\n- In scope: validate core shadcn exports render and type-check without internal-path imports.\n- Out of scope: feature-specific UI rewrites in `apps/desktop`.\n\nAcceptance Criteria:\n1. A consumer smoke test/fixture exists and imports `@mmo-claw/ui` public exports only.\n2. Smoke harness covers baseline primitives and newly added shadcn primitives.\n3. Build/test fail if consumers must import component internals to compile.\n4. Harness runs in CI/local scripts for repeatable validation.\n\nSuccess Metrics:\n- 1 automated consumer smoke command for `@mmo-claw/ui` in scripts.\n- 0 internal-path imports required by the fixture for covered primitives.\n\nTest Plan:\n- Unit: N/A for harness structure.\n- Integration: run consumer fixture build/test against package exports.\n- E2E: N/A.\n\nOut-of-Scope:\n- Migrating app feature code to new primitives in this story.",
+              "assignee": "",
+              "points": 5,
+              "labels": [
+                "ui",
+                "shadcn",
+                "packages-ui"
+              ],
+              "epicId": "17e775ea-7307-4a21-b06e-8fb94605a91e",
+              "sprintId": null,
+              "priority": "medium",
+              "status": "backlog",
+              "attachments": [],
+              "createdAt": "2026-02-21T07:39:52.422Z",
+              "updatedAt": "2026-02-21T07:40:43.817Z"
+            },
+            {
+              "id": "29",
+              "title": "packages/ui: add shadcn overlay/navigation primitives for desktop shell",
+              "description": "Problem/Context:\nDesktop shell features (drawer chat, dialogs, menus, tabs) currently rely on local UI composition. We need shared primitives to avoid rework and inconsistencies.\n\nScope Boundaries:\n- In scope: add shadcn-based `Sheet`, `Dialog`, `DropdownMenu`, `Tabs`, `ScrollArea`, `Separator` primitives to `packages/ui`.\n- In scope: export all new primitives from `packages/ui/src/index.ts`.\n- Out of scope: redesigning feature UX or animation behavior beyond shadcn defaults.\n\nAcceptance Criteria:\n1. All listed primitives are implemented with shadcn composition and expected sub-component APIs.\n2. No bespoke rewrite of already-available shadcn primitives.\n3. Components are consumable by `apps/desktop` without importing internals.\n4. `@mmo-claw/ui` build/lint/test pass.\n\nSuccess Metrics:\n- At least 6 overlay/navigation primitives exported and documented in source comments/readme.\n- Consumer app imports for these primitives resolve without path hacks.\n\nTest Plan:\n- Unit: open/close and keyboard interaction tests where applicable.\n- Integration: render a shell mock with sheet+tabs+menu composition.\n- E2E: optional desktop smoke for one overlay component.\n\nOut-of-Scope:\n- Complex custom animation frameworks.",
+              "assignee": "",
+              "points": 8,
+              "labels": [
+                "ui",
+                "shadcn",
+                "packages-ui"
+              ],
+              "epicId": "17e775ea-7307-4a21-b06e-8fb94605a91e",
+              "sprintId": null,
+              "priority": "medium",
+              "status": "backlog",
+              "attachments": [],
+              "createdAt": "2026-02-21T07:39:52.394Z",
+              "updatedAt": "2026-02-21T07:39:52.394Z"
+            },
+            {
+              "id": "28",
+              "title": "packages/ui: add shadcn form primitives (input/select/textarea/etc.)",
+              "description": "Problem/Context:\nDesktop flows (chat, settings, profile forms) need a shared form primitive set. Today these controls are ad-hoc or local to app code.\n\nScope Boundaries:\n- In scope: add shadcn form primitives to `packages/ui/src/components` and export them from `packages/ui/src/index.ts`.\n- In scope: primitives include `Input`, `Label`, `Textarea`, `Select`, `Checkbox`, `Switch` (and related sub-components required by shadcn patterns).\n- Out of scope: business-form schemas and validation rules per feature.\n\nAcceptance Criteria:\n1. All listed form primitives are added via shadcn patterns; no manual re-implementation of those primitives.\n2. Each primitive is exported from `@mmo-claw/ui` public API.\n3. Style tokens/class usage stays consistent with the shadcn baseline from the previous story.\n4. Package build/lint/test pass for `packages/ui`.\n\nSuccess Metrics:\n- At least 6 new shadcn form primitives exported from `@mmo-claw/ui`.\n- 0 duplicate local form primitive implementations in `apps/desktop` for covered controls.\n\nTest Plan:\n- Unit: render + interaction tests for each primitive family.\n- Integration: one sample composed form rendered from consumer side.\n- E2E: optional smoke through desktop settings form if wired.\n\nOut-of-Scope:\n- Feature-specific API validation and backend submission.",
+              "assignee": "",
+              "points": 8,
+              "labels": [
+                "ui",
+                "shadcn",
+                "packages-ui"
+              ],
+              "epicId": "17e775ea-7307-4a21-b06e-8fb94605a91e",
+              "sprintId": null,
+              "priority": "high",
+              "status": "backlog",
+              "attachments": [],
+              "createdAt": "2026-02-21T07:39:52.365Z",
+              "updatedAt": "2026-02-21T07:39:52.365Z"
+            },
+            {
+              "id": "27",
+              "title": "packages/ui: shadcn baseline + replace custom button/card",
+              "description": "Problem/Context:\n`packages/ui` currently ships hand-written primitives (`button`, `card`, `page-shell`) that diverge from shadcn patterns. This causes inconsistent API/styling and extra maintenance.\n\nScope Boundaries:\n- In scope: shadcn-first setup inside `packages/ui`, replace existing `button` and `card` implementations with shadcn-based component files, preserve package export ergonomics.\n- In scope: update required shadcn/radix dependencies in `packages/ui/package.json`.\n- Out of scope: broad desktop screen migration (handled in follow-up story).\n\nAcceptance Criteria:\n1. `packages/ui` has shadcn-compatible component structure and dependencies needed for generated primitives.\n2. `packages/ui/src/components/button.tsx` and `packages/ui/src/components/card.tsx` follow shadcn composition patterns (forwardRef/cva pattern where applicable), not bespoke rewrites.\n3. Existing exports in `packages/ui/src/index.ts` keep working for consumers.\n4. `pnpm --filter @mmo-claw/ui build` and lint pass.\n\nSuccess Metrics:\n- 100% of exported base primitives (`Button`, `Card`) in `@mmo-claw/ui` are shadcn-based.\n- 0 custom variant systems remain for these primitives.\n\nTest Plan:\n- Unit: component render and variant/class snapshots for button/card.\n- Integration: import and render from a consumer app entry.\n- E2E: N/A for package-only story.\n\nOut-of-Scope:\n- New primitive families beyond button/card.",
+              "assignee": "",
+              "points": 5,
+              "labels": [
+                "ui",
+                "shadcn",
+                "packages-ui"
+              ],
+              "epicId": "17e775ea-7307-4a21-b06e-8fb94605a91e",
+              "sprintId": null,
+              "priority": "high",
+              "status": "backlog",
+              "attachments": [],
+              "createdAt": "2026-02-21T07:39:52.328Z",
+              "updatedAt": "2026-02-21T07:39:52.328Z"
+            }
+          ]
+        },
         {
           "id": "224fb2d2-6816-400e-b9c0-4159e03207d8",
           "statusId": "ready-for-dev",
           "name": "Ready for Dev",
           "color": "#3b82f6",
           "createdAt": "2026-01-01T19:14:02.816Z",
-          "updatedAt": "2026-02-21T05:26:25.657Z",
+          "updatedAt": "2026-02-21T07:16:17.368Z",
+          "cards": []
+        },
+        {
+          "id": "9ca87ea0-8969-4c7d-b72b-15c01e1ec68c",
+          "statusId": "in-progress",
+          "name": "In Progress",
+          "color": "#f59e0b",
+          "createdAt": "2026-01-01T19:14:02.816Z",
+          "updatedAt": "2026-02-21T07:17:34.660Z",
+          "cards": []
+        },
+        {
+          "id": "0c2c9859-fb49-4082-9d23-d1ef37c17089",
+          "statusId": "review",
+          "name": "Review",
+          "color": "#8b5cf6",
+          "createdAt": "2026-01-01T19:14:02.816Z",
+          "updatedAt": "2026-02-21T07:17:45.531Z",
+          "cards": []
+        },
+        {
+          "id": "ef9f4271-7ae5-424c-b484-065df72c1d17",
+          "statusId": null,
+          "name": "Testing",
+          "color": "#6b7280",
+          "createdAt": "2026-02-20T20:34:05.969Z",
+          "updatedAt": "2026-02-21T07:43:36.479Z",
+          "cards": []
+        },
+        {
+          "id": "cba05eb6-69e3-4e77-80be-a3243d825974",
+          "statusId": null,
+          "name": "Done",
+          "color": "#6b7280",
+          "createdAt": "2026-02-20T20:34:16.153Z",
+          "updatedAt": "2026-02-21T07:43:36.479Z",
           "cards": [
-            {
-              "id": "26",
-              "title": "PocketPaw Daemon Auto-Start + Tray Lifecycle Hardening",
-              "description": "Ensure desktop startup path auto-launches PocketPaw daemon, performs health checks/retry policy, and aligns tray behavior with daemon state for first-launch and normal boot.",
-              "assignee": "",
-              "points": 3,
-              "labels": [],
-              "epicId": "29a103ec-1a89-41fb-9049-07d85bf7bc5c",
-              "sprintId": "e94328cd-32f1-4156-9dbf-682bb6f7c8fd",
-              "priority": "medium",
-              "status": "ready-for-dev",
-              "attachments": [],
-              "createdAt": "2026-02-21T05:26:25.657Z",
-              "updatedAt": "2026-02-21T05:26:25.657Z"
-            },
             {
               "id": "25",
               "title": "Settings: Telegram Token + Secret Storage",
@@ -78,10 +204,27 @@
               "epicId": "29a103ec-1a89-41fb-9049-07d85bf7bc5c",
               "sprintId": "e94328cd-32f1-4156-9dbf-682bb6f7c8fd",
               "priority": "medium",
-              "status": "ready-for-dev",
+              "status": "review",
               "attachments": [],
               "createdAt": "2026-02-21T05:26:18.210Z",
-              "updatedAt": "2026-02-21T05:26:18.210Z"
+              "updatedAt": "2026-02-21T07:43:36.479Z",
+              "completedAt": "2026-02-21T07:43:36.479Z"
+            },
+            {
+              "id": "26",
+              "title": "PocketPaw Daemon Auto-Start + Tray Lifecycle Hardening",
+              "description": "Ensure desktop startup path auto-launches PocketPaw daemon, performs health checks/retry policy, and aligns tray behavior with daemon state for first-launch and normal boot.",
+              "assignee": "",
+              "points": 3,
+              "labels": [],
+              "epicId": "29a103ec-1a89-41fb-9049-07d85bf7bc5c",
+              "sprintId": "e94328cd-32f1-4156-9dbf-682bb6f7c8fd",
+              "priority": "medium",
+              "status": "review",
+              "attachments": [],
+              "createdAt": "2026-02-21T05:26:25.657Z",
+              "updatedAt": "2026-02-21T07:43:36.450Z",
+              "completedAt": "2026-02-21T07:43:36.450Z"
             },
             {
               "id": "24",
@@ -93,10 +236,11 @@
               "epicId": "87b4a643-76ce-4b0e-ac35-956f088c62db",
               "sprintId": "e94328cd-32f1-4156-9dbf-682bb6f7c8fd",
               "priority": "medium",
-              "status": "ready-for-dev",
+              "status": "review",
               "attachments": [],
               "createdAt": "2026-02-21T05:26:12.657Z",
-              "updatedAt": "2026-02-21T05:26:12.657Z"
+              "updatedAt": "2026-02-21T07:43:36.418Z",
+              "completedAt": "2026-02-21T07:43:36.418Z"
             },
             {
               "id": "23",
@@ -108,10 +252,11 @@
               "epicId": "87b4a643-76ce-4b0e-ac35-956f088c62db",
               "sprintId": "e94328cd-32f1-4156-9dbf-682bb6f7c8fd",
               "priority": "critical",
-              "status": "ready-for-dev",
+              "status": "review",
               "attachments": [],
               "createdAt": "2026-02-21T05:26:04.884Z",
-              "updatedAt": "2026-02-21T05:26:04.884Z"
+              "updatedAt": "2026-02-21T07:43:36.385Z",
+              "completedAt": "2026-02-21T07:43:36.385Z"
             },
             {
               "id": "22",
@@ -123,10 +268,11 @@
               "epicId": "29a103ec-1a89-41fb-9049-07d85bf7bc5c",
               "sprintId": "e94328cd-32f1-4156-9dbf-682bb6f7c8fd",
               "priority": "high",
-              "status": "ready-for-dev",
+              "status": "review",
               "attachments": [],
               "createdAt": "2026-02-21T05:25:57.918Z",
-              "updatedAt": "2026-02-21T05:25:57.918Z"
+              "updatedAt": "2026-02-21T07:43:36.357Z",
+              "completedAt": "2026-02-21T07:43:36.357Z"
             },
             {
               "id": "21",
@@ -138,10 +284,11 @@
               "epicId": "29a103ec-1a89-41fb-9049-07d85bf7bc5c",
               "sprintId": "e94328cd-32f1-4156-9dbf-682bb6f7c8fd",
               "priority": "high",
-              "status": "ready-for-dev",
+              "status": "review",
               "attachments": [],
               "createdAt": "2026-02-21T05:25:52.355Z",
-              "updatedAt": "2026-02-21T05:25:52.355Z"
+              "updatedAt": "2026-02-21T07:43:36.320Z",
+              "completedAt": "2026-02-21T07:43:36.320Z"
             },
             {
               "id": "20",
@@ -153,10 +300,11 @@
               "epicId": "29a103ec-1a89-41fb-9049-07d85bf7bc5c",
               "sprintId": "e94328cd-32f1-4156-9dbf-682bb6f7c8fd",
               "priority": "high",
-              "status": "ready-for-dev",
+              "status": "review",
               "attachments": [],
               "createdAt": "2026-02-21T05:25:45.845Z",
-              "updatedAt": "2026-02-21T05:25:45.845Z"
+              "updatedAt": "2026-02-21T07:43:36.288Z",
+              "completedAt": "2026-02-21T07:43:36.288Z"
             },
             {
               "id": "19",
@@ -168,30 +316,12 @@
               "epicId": "29a103ec-1a89-41fb-9049-07d85bf7bc5c",
               "sprintId": "e94328cd-32f1-4156-9dbf-682bb6f7c8fd",
               "priority": "high",
-              "status": "ready-for-dev",
+              "status": "review",
               "attachments": [],
               "createdAt": "2026-02-21T05:25:39.752Z",
-              "updatedAt": "2026-02-21T05:25:39.752Z"
-            }
-          ]
-        },
-        {
-          "id": "9ca87ea0-8969-4c7d-b72b-15c01e1ec68c",
-          "statusId": "in-progress",
-          "name": "In Progress",
-          "color": "#f59e0b",
-          "createdAt": "2026-01-01T19:14:02.816Z",
-          "updatedAt": "2026-02-21T05:14:31.436Z",
-          "cards": []
-        },
-        {
-          "id": "0c2c9859-fb49-4082-9d23-d1ef37c17089",
-          "statusId": "review",
-          "name": "Review",
-          "color": "#8b5cf6",
-          "createdAt": "2026-01-01T19:14:02.816Z",
-          "updatedAt": "2026-02-21T05:14:31.436Z",
-          "cards": [
+              "updatedAt": "2026-02-21T07:43:03.472Z",
+              "completedAt": "2026-02-21T07:43:03.472Z"
+            },
             {
               "id": "4",
               "title": "Scaffold packages/ipc",
@@ -205,7 +335,8 @@
               "status": "review",
               "attachments": [],
               "createdAt": "2026-02-20T20:20:24.770Z",
-              "updatedAt": "2026-02-20T20:49:36.880Z"
+              "updatedAt": "2026-02-21T05:51:37.548Z",
+              "completedAt": "2026-02-21T05:51:37.548Z"
             },
             {
               "id": "2",
@@ -220,7 +351,8 @@
               "status": "review",
               "attachments": [],
               "createdAt": "2026-02-20T20:20:21.959Z",
-              "updatedAt": "2026-02-20T21:14:00.374Z"
+              "updatedAt": "2026-02-21T05:51:37.522Z",
+              "completedAt": "2026-02-21T05:51:37.522Z"
             },
             {
               "id": "3",
@@ -235,7 +367,8 @@
               "status": "review",
               "attachments": [],
               "createdAt": "2026-02-20T20:20:23.130Z",
-              "updatedAt": "2026-02-20T21:14:17.262Z"
+              "updatedAt": "2026-02-21T05:51:37.491Z",
+              "completedAt": "2026-02-21T05:51:37.491Z"
             },
             {
               "id": "5",
@@ -250,7 +383,8 @@
               "status": "review",
               "attachments": [],
               "createdAt": "2026-02-20T20:20:26.900Z",
-              "updatedAt": "2026-02-20T21:14:27.189Z"
+              "updatedAt": "2026-02-21T05:51:37.459Z",
+              "completedAt": "2026-02-21T05:51:37.459Z"
             },
             {
               "id": "8",
@@ -265,7 +399,8 @@
               "status": "review",
               "attachments": [],
               "createdAt": "2026-02-20T20:22:21.454Z",
-              "updatedAt": "2026-02-20T21:14:38.543Z"
+              "updatedAt": "2026-02-21T05:51:37.423Z",
+              "completedAt": "2026-02-21T05:51:37.423Z"
             },
             {
               "id": "9",
@@ -280,7 +415,8 @@
               "status": "review",
               "attachments": [],
               "createdAt": "2026-02-20T20:22:23.144Z",
-              "updatedAt": "2026-02-20T21:15:04.127Z"
+              "updatedAt": "2026-02-21T05:51:37.387Z",
+              "completedAt": "2026-02-21T05:51:37.387Z"
             },
             {
               "id": "10",
@@ -295,7 +431,8 @@
               "status": "review",
               "attachments": [],
               "createdAt": "2026-02-20T20:22:25.407Z",
-              "updatedAt": "2026-02-20T21:15:04.172Z"
+              "updatedAt": "2026-02-21T05:51:37.358Z",
+              "completedAt": "2026-02-21T05:51:37.358Z"
             },
             {
               "id": "6",
@@ -310,7 +447,8 @@
               "status": "review",
               "attachments": [],
               "createdAt": "2026-02-20T20:20:29.689Z",
-              "updatedAt": "2026-02-20T21:15:04.202Z"
+              "updatedAt": "2026-02-21T05:51:37.325Z",
+              "completedAt": "2026-02-21T05:51:37.325Z"
             },
             {
               "id": "7",
@@ -325,22 +463,8 @@
               "status": "review",
               "attachments": [],
               "createdAt": "2026-02-20T20:20:32.627Z",
-              "updatedAt": "2026-02-20T21:15:04.225Z"
-            },
-            {
-              "id": "11",
-              "title": "Install Camoufox",
-              "description": "Install Camoufox via uvx-manager.",
-              "assignee": "",
-              "points": 3,
-              "labels": [],
-              "epicId": "b365b2bf-96ee-45ce-aaf9-5b734f40db60",
-              "sprintId": "e94328cd-32f1-4156-9dbf-682bb6f7c8fd",
-              "priority": "low",
-              "status": "review",
-              "attachments": [],
-              "createdAt": "2026-02-20T20:22:32.093Z",
-              "updatedAt": "2026-02-20T21:15:04.248Z"
+              "updatedAt": "2026-02-21T05:51:20.304Z",
+              "completedAt": "2026-02-21T05:51:20.304Z"
             },
             {
               "id": "12",
@@ -355,7 +479,24 @@
               "status": "review",
               "attachments": [],
               "createdAt": "2026-02-20T20:22:33.775Z",
-              "updatedAt": "2026-02-20T21:15:04.282Z"
+              "updatedAt": "2026-02-21T05:51:20.278Z",
+              "completedAt": "2026-02-21T05:51:20.278Z"
+            },
+            {
+              "id": "11",
+              "title": "Install Camoufox",
+              "description": "Install Camoufox via uvx-manager.",
+              "assignee": "",
+              "points": 3,
+              "labels": [],
+              "epicId": "b365b2bf-96ee-45ce-aaf9-5b734f40db60",
+              "sprintId": "e94328cd-32f1-4156-9dbf-682bb6f7c8fd",
+              "priority": "low",
+              "status": "review",
+              "attachments": [],
+              "createdAt": "2026-02-20T20:22:32.093Z",
+              "updatedAt": "2026-02-21T05:51:20.248Z",
+              "completedAt": "2026-02-21T05:51:20.248Z"
             },
             {
               "id": "13",
@@ -370,7 +511,8 @@
               "status": "review",
               "attachments": [],
               "createdAt": "2026-02-20T20:22:35.825Z",
-              "updatedAt": "2026-02-20T21:15:04.307Z"
+              "updatedAt": "2026-02-21T05:51:20.213Z",
+              "completedAt": "2026-02-21T05:51:20.213Z"
             },
             {
               "id": "14",
@@ -385,7 +527,8 @@
               "status": "review",
               "attachments": [],
               "createdAt": "2026-02-20T20:22:54.195Z",
-              "updatedAt": "2026-02-21T05:06:33.292Z"
+              "updatedAt": "2026-02-21T05:51:20.185Z",
+              "completedAt": "2026-02-21T05:51:20.185Z"
             },
             {
               "id": "15",
@@ -400,7 +543,8 @@
               "status": "review",
               "attachments": [],
               "createdAt": "2026-02-20T20:22:55.539Z",
-              "updatedAt": "2026-02-21T05:06:49.245Z"
+              "updatedAt": "2026-02-21T05:51:20.159Z",
+              "completedAt": "2026-02-21T05:51:20.159Z"
             },
             {
               "id": "16",
@@ -415,7 +559,8 @@
               "status": "review",
               "attachments": [],
               "createdAt": "2026-02-20T20:22:57.408Z",
-              "updatedAt": "2026-02-21T05:08:56.261Z"
+              "updatedAt": "2026-02-21T05:51:20.131Z",
+              "completedAt": "2026-02-21T05:51:20.131Z"
             },
             {
               "id": "17",
@@ -430,7 +575,8 @@
               "status": "review",
               "attachments": [],
               "createdAt": "2026-02-20T20:22:59.921Z",
-              "updatedAt": "2026-02-21T05:11:56.815Z"
+              "updatedAt": "2026-02-21T05:51:20.098Z",
+              "completedAt": "2026-02-21T05:51:20.098Z"
             },
             {
               "id": "18",
@@ -445,27 +591,10 @@
               "status": "review",
               "attachments": [],
               "createdAt": "2026-02-20T20:23:03.329Z",
-              "updatedAt": "2026-02-21T05:14:31.436Z"
+              "updatedAt": "2026-02-21T05:51:20.052Z",
+              "completedAt": "2026-02-21T05:51:20.052Z"
             }
           ]
-        },
-        {
-          "id": "ef9f4271-7ae5-424c-b484-065df72c1d17",
-          "statusId": null,
-          "name": "Testing",
-          "color": "#6b7280",
-          "createdAt": "2026-02-20T20:34:05.969Z",
-          "updatedAt": "2026-02-20T20:34:05.969Z",
-          "cards": []
-        },
-        {
-          "id": "cba05eb6-69e3-4e77-80be-a3243d825974",
-          "statusId": null,
-          "name": "Done",
-          "color": "#6b7280",
-          "createdAt": "2026-02-20T20:34:16.153Z",
-          "updatedAt": "2026-02-20T20:34:16.153Z",
-          "cards": []
         },
         {
           "id": "9d0b19bb-6591-43cf-b2aa-69632ad67810",
@@ -553,7 +682,7 @@
     }
   ],
   "locks": {},
-  "stateVersion": 368,
+  "stateVersion": 505,
   "epics": [
     {
       "id": "1dfe3e68-ca84-4c2f-9ee3-e82f19252fbe",
@@ -600,30 +729,39 @@
       "status": "backlog",
       "createdAt": "2026-02-20T20:20:05.932Z",
       "updatedAt": "2026-02-20T20:20:05.932Z"
+    },
+    {
+      "id": "17e775ea-7307-4a21-b06e-8fb94605a91e",
+      "name": "Phase 3 - Shared UI (shadcn-first)",
+      "description": "Expand packages/ui as a shared component layer by composing shadcn primitives and patterns. No handcrafted rewrites of components that already exist in shadcn.",
+      "projectKey": "phase3-ui",
+      "status": "backlog",
+      "createdAt": "2026-02-21T07:38:36.898Z",
+      "updatedAt": "2026-02-21T07:38:36.898Z"
     }
   ],
   "sprints": [
-    {
-      "id": "cbddb305-4719-4cd2-957c-2b087aafbe9c",
-      "name": "S1",
-      "goal": "",
-      "startDate": null,
-      "endDate": null,
-      "capacityPoints": null,
-      "status": "active",
-      "createdAt": "2026-01-03T15:55:03.584Z",
-      "updatedAt": "2026-01-03T15:55:58.340Z"
-    },
     {
       "id": "e94328cd-32f1-4156-9dbf-682bb6f7c8fd",
       "name": "Sprint 1: Foundation",
       "goal": "Establish monorepo structure and initial shell",
       "startDate": "2026-02-21",
-      "endDate": "2026-03-07",
+      "endDate": "2026-02-21",
       "capacityPoints": 20,
       "status": "active",
       "createdAt": "2026-02-20T20:20:07.114Z",
-      "updatedAt": "2026-02-20T20:20:07.114Z"
+      "updatedAt": "2026-02-21T07:44:37.667Z"
+    },
+    {
+      "id": "d832567a-b523-4fd3-932a-ecad2d1f90d7",
+      "name": "s2: Electron UI",
+      "goal": "focus on gui layout menu and ux",
+      "startDate": null,
+      "endDate": null,
+      "capacityPoints": null,
+      "status": "planned",
+      "createdAt": "2026-02-21T07:45:31.277Z",
+      "updatedAt": "2026-02-21T07:45:31.277Z"
     }
   ]
 }

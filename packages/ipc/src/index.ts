@@ -1,4 +1,12 @@
 export {
+  chatCancelStreamRequestSchema,
+  chatCancelStreamResponseSchema,
+  chatCancelStreamResultSchema,
+  chatMessageSourceSchema,
+  chatSendMessageRequestSchema,
+  chatSendMessageResponseSchema,
+  chatSendMessageResultSchema,
+  chatStreamEventSchema,
   desktopChannels,
   healthSnapshotResponseSchema,
   healthSnapshotSchema,
@@ -12,9 +20,25 @@ export {
   runtimeToolOperationResponseSchema,
   runtimeToolOperationResultSchema,
   runtimeToolSchema,
+  runStatusEventSchema,
+  runStatusSourceSchema,
+  secretSettingClearRequestSchema,
+  secretSettingListResponseSchema,
+  secretSettingMutationResponseSchema,
+  secretSettingSchema,
+  secretSettingUpsertRequestSchema,
+  secretSettingKeySchema,
 } from "./contracts";
 
 export type {
+  ChatCancelStreamRequest,
+  ChatCancelStreamResponse,
+  ChatCancelStreamResult,
+  ChatMessageSource,
+  ChatSendMessageRequest,
+  ChatSendMessageResponse,
+  ChatSendMessageResult,
+  ChatStreamEvent,
   DesktopChannel,
   DesktopIpcApi,
   HealthSnapshot,
@@ -29,6 +53,14 @@ export type {
   RuntimeToolOperationRequest,
   RuntimeToolOperationResponse,
   RuntimeToolOperationResult,
+  RunStatusEvent,
+  RunStatusSource,
+  SecretSetting,
+  SecretSettingClearRequest,
+  SecretSettingKey,
+  SecretSettingListResponse,
+  SecretSettingMutationResponse,
+  SecretSettingUpsertRequest,
 } from "./contracts";
 
 export { createIpcError, validatePayload } from "./validators";

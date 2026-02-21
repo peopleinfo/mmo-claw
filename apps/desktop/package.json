@@ -11,7 +11,7 @@
     "build:main": "pnpm exec tsc -p tsconfig.main.json",
     "build:renderer": "pnpm exec vite build",
     "lint": "pnpm exec eslint \"electron/**/*.ts\" \"src/**/*.{ts,tsx}\" \"vite.config.ts\"",
-    "test": "pnpm exec vitest run src/lib/routes.test.ts"
+    "test": "pnpm exec vitest run src/lib/routes.test.ts src/store/use-chat-store.test.ts src/store/use-run-store.test.ts electron/pocketpaw-bridge.test.ts electron/pocketpaw-daemon.test.ts electron/secret-store.test.ts"
   },
   "dependencies": {
     "@mmo-claw/db": "workspace:*",

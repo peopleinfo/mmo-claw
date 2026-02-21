@@ -62,8 +62,10 @@ Before moving `testing -> done`, AI must pass:
 Default E2E expectation:
 
 ```bash
-pnpm exec playwright test --headless
+pnpm exec playwright test
 ```
+
+Playwright runs headless by default unless `--headed` is set.
 
 If Playwright is not yet configured for a required story, that setup work must be completed first, and the story remains in `testing` until E2E passes.
 

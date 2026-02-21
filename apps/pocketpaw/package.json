@@ -8,7 +8,7 @@
     "dev": "pnpm exec tsc -p tsconfig.json --watch",
     "build": "pnpm exec tsc -p tsconfig.json",
     "lint": "pnpm exec eslint \"src/**/*.ts\"",
-    "test": "pnpm exec vitest run src/skills/instagram-poster-skill.test.ts src/telegram-flow.test.ts"
+    "test": "pnpm exec vitest run"
   },
   "dependencies": {
     "@mmo-claw/actors": "workspace:*",

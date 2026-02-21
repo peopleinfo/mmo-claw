@@ -12,3 +12,5 @@ node_modules/
 # Build outputs
 dist/
 coverage/
+playwright-report/
+test-results/
