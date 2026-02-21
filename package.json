@@ -12,7 +12,8 @@
     "e2e": "playwright test",
     "workspaces": "pnpm -r --depth -1 list",
     "smoke": "pnpm run workspaces && pnpm run build && pnpm run lint && pnpm run test",
-    "bundle:uv": "node scripts/bundle-uv-binaries.mjs"
+    "bundle:uv": "node scripts/bundle-uv-binaries.mjs",
+    "postinstall": "git submodule update --init --recursive"
   },
   "devDependencies": {
     "@playwright/test": "^1.56.1",

@@ -1,3 +1,5 @@
 packages:
   - "apps/*"
   - "packages/*"
+  - "!apps/pocketpaw/upstream"
+  - "!apps/pocketpaw/upstream/**"
