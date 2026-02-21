@@ -43,7 +43,7 @@
       "name": "next-gen",
       "type": "bmad",
       "createdAt": "2026-01-01T19:14:02.816Z",
-      "updatedAt": "2026-02-21T07:43:36.479Z",
+      "updatedAt": "2026-02-21T11:43:06.456Z",
       "lists": [
         {
           "id": "c48ee488-2cbe-47c9-a8a9-6832cbf2858c",
@@ -51,104 +51,8 @@
           "name": "Backlog",
           "color": "#6b7280",
           "createdAt": "2026-02-21T07:38:30.726Z",
-          "updatedAt": "2026-02-21T07:40:43.817Z",
-          "cards": [
-            {
-              "id": "31",
-              "title": "packages/ui: enforce shadcn-first contribution guardrails",
-              "description": "Problem/Context:\nWithout explicit guardrails, future component work may reintroduce custom rewrites instead of reusing shadcn primitives.\n\nScope Boundaries:\n- In scope: add `packages/ui` contribution guidance and checklist that mandates shadcn-first component additions.\n- In scope: add lightweight automated checks (lint/script/test) to catch direct duplication/rewrite patterns for existing shadcn primitives.\n- Out of scope: external design system tooling (Storybook rollout, visual diff platform setup).\n\nAcceptance Criteria:\n1. Repo docs include a clear `packages/ui` rule: use shadcn primitives/components; do not hand-rewrite equivalents.\n2. A CI-checkable command exists and fails when forbidden duplication patterns are introduced.\n3. Guardrails are referenced in developer workflow docs for UI changes.\n4. All new checks pass on current codebase.\n\nSuccess Metrics:\n- 1 documented policy section for shadcn-first UI contribution.\n- 1 automated check integrated into package or repo scripts.\n\nTest Plan:\n- Unit: verify guard script rules with pass/fail fixtures where practical.\n- Integration: run guard command in CI/local workflow.\n- E2E: N/A.\n\nOut-of-Scope:\n- Complete visual regression infrastructure.",
-              "assignee": "",
-              "points": 3,
-              "labels": [
-                "ui",
-                "shadcn",
-                "packages-ui"
-              ],
-              "epicId": "17e775ea-7307-4a21-b06e-8fb94605a91e",
-              "sprintId": null,
-              "priority": "medium",
-              "status": "backlog",
-              "attachments": [],
-              "createdAt": "2026-02-21T07:39:52.448Z",
-              "updatedAt": "2026-02-21T07:39:52.448Z"
-            },
-            {
-              "id": "30",
-              "title": "packages/ui: add consumer smoke harness for shadcn exports",
-              "description": "Problem/Context:\n`@mmo-claw/ui` needs a repeatable consumer-level check to ensure exported shadcn components work in downstream apps and discourage local rewrites.\n\nScope Boundaries:\n- In scope: add package-level integration smoke harness that imports exported primitives from `@mmo-claw/ui` in a consumer fixture.\n- In scope: validate core shadcn exports render and type-check without internal-path imports.\n- Out of scope: feature-specific UI rewrites in `apps/desktop`.\n\nAcceptance Criteria:\n1. A consumer smoke test/fixture exists and imports `@mmo-claw/ui` public exports only.\n2. Smoke harness covers baseline primitives and newly added shadcn primitives.\n3. Build/test fail if consumers must import component internals to compile.\n4. Harness runs in CI/local scripts for repeatable validation.\n\nSuccess Metrics:\n- 1 automated consumer smoke command for `@mmo-claw/ui` in scripts.\n- 0 internal-path imports required by the fixture for covered primitives.\n\nTest Plan:\n- Unit: N/A for harness structure.\n- Integration: run consumer fixture build/test against package exports.\n- E2E: N/A.\n\nOut-of-Scope:\n- Migrating app feature code to new primitives in this story.",
-              "assignee": "",
-              "points": 5,
-              "labels": [
-                "ui",
-                "shadcn",
-                "packages-ui"
-              ],
-              "epicId": "17e775ea-7307-4a21-b06e-8fb94605a91e",
-              "sprintId": null,
-              "priority": "medium",
-              "status": "backlog",
-              "attachments": [],
-              "createdAt": "2026-02-21T07:39:52.422Z",
-              "updatedAt": "2026-02-21T07:40:43.817Z"
-            },
-            {
-              "id": "29",
-              "title": "packages/ui: add shadcn overlay/navigation primitives for desktop shell",
-              "description": "Problem/Context:\nDesktop shell features (drawer chat, dialogs, menus, tabs) currently rely on local UI composition. We need shared primitives to avoid rework and inconsistencies.\n\nScope Boundaries:\n- In scope: add shadcn-based `Sheet`, `Dialog`, `DropdownMenu`, `Tabs`, `ScrollArea`, `Separator` primitives to `packages/ui`.\n- In scope: export all new primitives from `packages/ui/src/index.ts`.\n- Out of scope: redesigning feature UX or animation behavior beyond shadcn defaults.\n\nAcceptance Criteria:\n1. All listed primitives are implemented with shadcn composition and expected sub-component APIs.\n2. No bespoke rewrite of already-available shadcn primitives.\n3. Components are consumable by `apps/desktop` without importing internals.\n4. `@mmo-claw/ui` build/lint/test pass.\n\nSuccess Metrics:\n- At least 6 overlay/navigation primitives exported and documented in source comments/readme.\n- Consumer app imports for these primitives resolve without path hacks.\n\nTest Plan:\n- Unit: open/close and keyboard interaction tests where applicable.\n- Integration: render a shell mock with sheet+tabs+menu composition.\n- E2E: optional desktop smoke for one overlay component.\n\nOut-of-Scope:\n- Complex custom animation frameworks.",
-              "assignee": "",
-              "points": 8,
-              "labels": [
-                "ui",
-                "shadcn",
-                "packages-ui"
-              ],
-              "epicId": "17e775ea-7307-4a21-b06e-8fb94605a91e",
-              "sprintId": null,
-              "priority": "medium",
-              "status": "backlog",
-              "attachments": [],
-              "createdAt": "2026-02-21T07:39:52.394Z",
-              "updatedAt": "2026-02-21T07:39:52.394Z"
-            },
-            {
-              "id": "28",
-              "title": "packages/ui: add shadcn form primitives (input/select/textarea/etc.)",
-              "description": "Problem/Context:\nDesktop flows (chat, settings, profile forms) need a shared form primitive set. Today these controls are ad-hoc or local to app code.\n\nScope Boundaries:\n- In scope: add shadcn form primitives to `packages/ui/src/components` and export them from `packages/ui/src/index.ts`.\n- In scope: primitives include `Input`, `Label`, `Textarea`, `Select`, `Checkbox`, `Switch` (and related sub-components required by shadcn patterns).\n- Out of scope: business-form schemas and validation rules per feature.\n\nAcceptance Criteria:\n1. All listed form primitives are added via shadcn patterns; no manual re-implementation of those primitives.\n2. Each primitive is exported from `@mmo-claw/ui` public API.\n3. Style tokens/class usage stays consistent with the shadcn baseline from the previous story.\n4. Package build/lint/test pass for `packages/ui`.\n\nSuccess Metrics:\n- At least 6 new shadcn form primitives exported from `@mmo-claw/ui`.\n- 0 duplicate local form primitive implementations in `apps/desktop` for covered controls.\n\nTest Plan:\n- Unit: render + interaction tests for each primitive family.\n- Integration: one sample composed form rendered from consumer side.\n- E2E: optional smoke through desktop settings form if wired.\n\nOut-of-Scope:\n- Feature-specific API validation and backend submission.",
-              "assignee": "",
-              "points": 8,
-              "labels": [
-                "ui",
-                "shadcn",
-                "packages-ui"
-              ],
-              "epicId": "17e775ea-7307-4a21-b06e-8fb94605a91e",
-              "sprintId": null,
-              "priority": "high",
-              "status": "backlog",
-              "attachments": [],
-              "createdAt": "2026-02-21T07:39:52.365Z",
-              "updatedAt": "2026-02-21T07:39:52.365Z"
-            },
-            {
-              "id": "27",
-              "title": "packages/ui: shadcn baseline + replace custom button/card",
-              "description": "Problem/Context:\n`packages/ui` currently ships hand-written primitives (`button`, `card`, `page-shell`) that diverge from shadcn patterns. This causes inconsistent API/styling and extra maintenance.\n\nScope Boundaries:\n- In scope: shadcn-first setup inside `packages/ui`, replace existing `button` and `card` implementations with shadcn-based component files, preserve package export ergonomics.\n- In scope: update required shadcn/radix dependencies in `packages/ui/package.json`.\n- Out of scope: broad desktop screen migration (handled in follow-up story).\n\nAcceptance Criteria:\n1. `packages/ui` has shadcn-compatible component structure and dependencies needed for generated primitives.\n2. `packages/ui/src/components/button.tsx` and `packages/ui/src/components/card.tsx` follow shadcn composition patterns (forwardRef/cva pattern where applicable), not bespoke rewrites.\n3. Existing exports in `packages/ui/src/index.ts` keep working for consumers.\n4. `pnpm --filter @mmo-claw/ui build` and lint pass.\n\nSuccess Metrics:\n- 100% of exported base primitives (`Button`, `Card`) in `@mmo-claw/ui` are shadcn-based.\n- 0 custom variant systems remain for these primitives.\n\nTest Plan:\n- Unit: component render and variant/class snapshots for button/card.\n- Integration: import and render from a consumer app entry.\n- E2E: N/A for package-only story.\n\nOut-of-Scope:\n- New primitive families beyond button/card.",
-              "assignee": "",
-              "points": 5,
-              "labels": [
-                "ui",
-                "shadcn",
-                "packages-ui"
-              ],
-              "epicId": "17e775ea-7307-4a21-b06e-8fb94605a91e",
-              "sprintId": null,
-              "priority": "high",
-              "status": "backlog",
-              "attachments": [],
-              "createdAt": "2026-02-21T07:39:52.328Z",
-              "updatedAt": "2026-02-21T07:39:52.328Z"
-            }
-          ]
+          "updatedAt": "2026-02-21T11:41:50.747Z",
+          "cards": []
         },
         {
           "id": "224fb2d2-6816-400e-b9c0-4159e03207d8",
@@ -192,8 +96,28 @@
           "name": "Done",
           "color": "#6b7280",
           "createdAt": "2026-02-20T20:34:16.153Z",
-          "updatedAt": "2026-02-21T07:43:36.479Z",
+          "updatedAt": "2026-02-21T11:43:06.456Z",
           "cards": [
+            {
+              "id": "27",
+              "title": "packages/ui: shadcn baseline + replace custom button/card",
+              "description": "Problem/Context:\n`packages/ui` currently ships hand-written primitives (`button`, `card`, `page-shell`) that diverge from shadcn patterns. This causes inconsistent API/styling and extra maintenance.\n\nScope Boundaries:\n- In scope: shadcn-first setup inside `packages/ui`, replace existing `button` and `card` implementations with shadcn-based component files, preserve package export ergonomics.\n- In scope: update required shadcn/radix dependencies in `packages/ui/package.json`.\n- Out of scope: broad desktop screen migration (handled in follow-up story).\n\nAcceptance Criteria:\n1. `packages/ui` has shadcn-compatible component structure and dependencies needed for generated primitives.\n2. `packages/ui/src/components/button.tsx` and `packages/ui/src/components/card.tsx` follow shadcn composition patterns (forwardRef/cva pattern where applicable), not bespoke rewrites.\n3. Existing exports in `packages/ui/src/index.ts` keep working for consumers.\n4. `pnpm --filter @mmo-claw/ui build` and lint pass.\n\nSuccess Metrics:\n- 100% of exported base primitives (`Button`, `Card`) in `@mmo-claw/ui` are shadcn-based.\n- 0 custom variant systems remain for these primitives.\n\nTest Plan:\n- Unit: component render and variant/class snapshots for button/card.\n- Integration: import and render from a consumer app entry.\n- E2E: N/A for package-only story.\n\nOut-of-Scope:\n- New primitive families beyond button/card.",
+              "assignee": "",
+              "points": 5,
+              "labels": [
+                "ui",
+                "shadcn",
+                "packages-ui"
+              ],
+              "epicId": "17e775ea-7307-4a21-b06e-8fb94605a91e",
+              "sprintId": null,
+              "priority": "high",
+              "status": "verified",
+              "attachments": [],
+              "createdAt": "2026-02-21T07:39:52.328Z",
+              "updatedAt": "2026-02-21T11:43:06.456Z",
+              "completedAt": "2026-02-21T11:43:06.456Z"
+            },
             {
               "id": "25",
               "title": "Settings: Telegram Token + Secret Storage",
@@ -602,8 +526,85 @@
           "name": "Verified",
           "color": "#6b7280",
           "createdAt": "2026-02-21T05:33:53.163Z",
-          "updatedAt": "2026-02-21T05:33:53.163Z",
-          "cards": []
+          "updatedAt": "2026-02-21T11:43:06.456Z",
+          "cards": [
+            {
+              "id": "31",
+              "title": "packages/ui: enforce shadcn-first contribution guardrails",
+              "description": "Problem/Context:\nWithout explicit guardrails, future component work may reintroduce custom rewrites instead of reusing shadcn primitives.\n\nScope Boundaries:\n- In scope: add `packages/ui` contribution guidance and checklist that mandates shadcn-first component additions.\n- In scope: add lightweight automated checks (lint/script/test) to catch direct duplication/rewrite patterns for existing shadcn primitives.\n- Out of scope: external design system tooling (Storybook rollout, visual diff platform setup).\n\nAcceptance Criteria:\n1. Repo docs include a clear `packages/ui` rule: use shadcn primitives/components; do not hand-rewrite equivalents.\n2. A CI-checkable command exists and fails when forbidden duplication patterns are introduced.\n3. Guardrails are referenced in developer workflow docs for UI changes.\n4. All new checks pass on current codebase.\n\nSuccess Metrics:\n- 1 documented policy section for shadcn-first UI contribution.\n- 1 automated check integrated into package or repo scripts.\n\nTest Plan:\n- Unit: verify guard script rules with pass/fail fixtures where practical.\n- Integration: run guard command in CI/local workflow.\n- E2E: N/A.\n\nOut-of-Scope:\n- Complete visual regression infrastructure.",
+              "assignee": "",
+              "points": 3,
+              "labels": [
+                "ui",
+                "shadcn",
+                "packages-ui"
+              ],
+              "epicId": "17e775ea-7307-4a21-b06e-8fb94605a91e",
+              "sprintId": null,
+              "priority": "medium",
+              "status": "verified",
+              "attachments": [],
+              "createdAt": "2026-02-21T07:39:52.448Z",
+              "updatedAt": "2026-02-21T11:41:51.181Z"
+            },
+            {
+              "id": "30",
+              "title": "packages/ui: add consumer smoke harness for shadcn exports",
+              "description": "Problem/Context:\n`@mmo-claw/ui` needs a repeatable consumer-level check to ensure exported shadcn components work in downstream apps and discourage local rewrites.\n\nScope Boundaries:\n- In scope: add package-level integration smoke harness that imports exported primitives from `@mmo-claw/ui` in a consumer fixture.\n- In scope: validate core shadcn exports render and type-check without internal-path imports.\n- Out of scope: feature-specific UI rewrites in `apps/desktop`.\n\nAcceptance Criteria:\n1. A consumer smoke test/fixture exists and imports `@mmo-claw/ui` public exports only.\n2. Smoke harness covers baseline primitives and newly added shadcn primitives.\n3. Build/test fail if consumers must import component internals to compile.\n4. Harness runs in CI/local scripts for repeatable validation.\n\nSuccess Metrics:\n- 1 automated consumer smoke command for `@mmo-claw/ui` in scripts.\n- 0 internal-path imports required by the fixture for covered primitives.\n\nTest Plan:\n- Unit: N/A for harness structure.\n- Integration: run consumer fixture build/test against package exports.\n- E2E: N/A.\n\nOut-of-Scope:\n- Migrating app feature code to new primitives in this story.",
+              "assignee": "",
+              "points": 5,
+              "labels": [
+                "ui",
+                "shadcn",
+                "packages-ui"
+              ],
+              "epicId": "17e775ea-7307-4a21-b06e-8fb94605a91e",
+              "sprintId": null,
+              "priority": "medium",
+              "status": "verified",
+              "attachments": [],
+              "createdAt": "2026-02-21T07:39:52.422Z",
+              "updatedAt": "2026-02-21T11:41:49.635Z"
+            },
+            {
+              "id": "29",
+              "title": "packages/ui: add shadcn overlay/navigation primitives for desktop shell",
+              "description": "Problem/Context:\nDesktop shell features (drawer chat, dialogs, menus, tabs) currently rely on local UI composition. We need shared primitives to avoid rework and inconsistencies.\n\nScope Boundaries:\n- In scope: add shadcn-based `Sheet`, `Dialog`, `DropdownMenu`, `Tabs`, `ScrollArea`, `Separator` primitives to `packages/ui`.\n- In scope: export all new primitives from `packages/ui/src/index.ts`.\n- Out of scope: redesigning feature UX or animation behavior beyond shadcn defaults.\n\nAcceptance Criteria:\n1. All listed primitives are implemented with shadcn composition and expected sub-component APIs.\n2. No bespoke rewrite of already-available shadcn primitives.\n3. Components are consumable by `apps/desktop` without importing internals.\n4. `@mmo-claw/ui` build/lint/test pass.\n\nSuccess Metrics:\n- At least 6 overlay/navigation primitives exported and documented in source comments/readme.\n- Consumer app imports for these primitives resolve without path hacks.\n\nTest Plan:\n- Unit: open/close and keyboard interaction tests where applicable.\n- Integration: render a shell mock with sheet+tabs+menu composition.\n- E2E: optional desktop smoke for one overlay component.\n\nOut-of-Scope:\n- Complex custom animation frameworks.",
+              "assignee": "",
+              "points": 8,
+              "labels": [
+                "ui",
+                "shadcn",
+                "packages-ui"
+              ],
+              "epicId": "17e775ea-7307-4a21-b06e-8fb94605a91e",
+              "sprintId": null,
+              "priority": "medium",
+              "status": "verified",
+              "attachments": [],
+              "createdAt": "2026-02-21T07:39:52.394Z",
+              "updatedAt": "2026-02-21T11:41:46.943Z"
+            },
+            {
+              "id": "28",
+              "title": "packages/ui: add shadcn form primitives (input/select/textarea/etc.)",
+              "description": "Problem/Context:\nDesktop flows (chat, settings, profile forms) need a shared form primitive set. Today these controls are ad-hoc or local to app code.\n\nScope Boundaries:\n- In scope: add shadcn form primitives to `packages/ui/src/components` and export them from `packages/ui/src/index.ts`.\n- In scope: primitives include `Input`, `Label`, `Textarea`, `Select`, `Checkbox`, `Switch` (and related sub-components required by shadcn patterns).\n- Out of scope: business-form schemas and validation rules per feature.\n\nAcceptance Criteria:\n1. All listed form primitives are added via shadcn patterns; no manual re-implementation of those primitives.\n2. Each primitive is exported from `@mmo-claw/ui` public API.\n3. Style tokens/class usage stays consistent with the shadcn baseline from the previous story.\n4. Package build/lint/test pass for `packages/ui`.\n\nSuccess Metrics:\n- At least 6 new shadcn form primitives exported from `@mmo-claw/ui`.\n- 0 duplicate local form primitive implementations in `apps/desktop` for covered controls.\n\nTest Plan:\n- Unit: render + interaction tests for each primitive family.\n- Integration: one sample composed form rendered from consumer side.\n- E2E: optional smoke through desktop settings form if wired.\n\nOut-of-Scope:\n- Feature-specific API validation and backend submission.",
+              "assignee": "",
+              "points": 8,
+              "labels": [
+                "ui",
+                "shadcn",
+                "packages-ui"
+              ],
+              "epicId": "17e775ea-7307-4a21-b06e-8fb94605a91e",
+              "sprintId": null,
+              "priority": "high",
+              "status": "verified",
+              "attachments": [],
+              "createdAt": "2026-02-21T07:39:52.365Z",
+              "updatedAt": "2026-02-21T11:41:25.445Z"
+            }
+          ]
         }
       ]
     },
@@ -682,7 +683,7 @@
     }
   ],
   "locks": {},
-  "stateVersion": 505,
+  "stateVersion": 517,
   "epics": [
     {
       "id": "1dfe3e68-ca84-4c2f-9ee3-e82f19252fbe",
