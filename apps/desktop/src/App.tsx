@@ -5,7 +5,13 @@ import * as UI from "./ui";
 
 import { ChatSessionPanel } from "./components/chat-session-panel";
 import { MarketplacePanel } from "./components/marketplace-panel";
-import { PagePlaceholder } from "./components/page-placeholder";
+import {
+  AccountsPanel,
+  ProfilesPanel,
+  ProxiesPanel,
+  SchedulePanel,
+  TeamPanel,
+} from "./components/ops-panels";
 import { PocketpawView } from "./components/pocketpaw-view";
 import { RunsPanel } from "./components/runs-panel";
 import { SettingsPanel } from "./components/settings-panel";
@@ -211,48 +217,58 @@ export const App = (): JSX.Element => {
           <Route
             path="/profiles"
             element={
-              <PagePlaceholder
+              <UI.PageShell
                 title="Profiles"
-                description="Profile CRUD shell is wired."
-              />
+                description="Profile CRUD for browser identity and actor routing."
+              >
+                <ProfilesPanel />
+              </UI.PageShell>
             }
           />
           <Route
             path="/proxies"
             element={
-              <PagePlaceholder
+              <UI.PageShell
                 title="Proxies"
-                description="Proxy CRUD shell is wired."
-              />
+                description="Proxy endpoint management for anti-detect sessions."
+              >
+                <ProxiesPanel />
+              </UI.PageShell>
             }
           />
           <Route
             path="/accounts"
             element={
-              <PagePlaceholder
+              <UI.PageShell
                 title="Accounts"
-                description="Account binding shell is wired."
-              />
+                description="Bind accounts to profile and proxy assignments."
+              >
+                <AccountsPanel />
+              </UI.PageShell>
             }
           />
           <Route path="/marketplace" element={<MarketplacePage />} />
           <Route
             path="/schedule"
             element={
-              <PagePlaceholder
+              <UI.PageShell
                 title="Schedule"
-                description="Scheduling shell is wired."
-              />
+                description="Cron schedule definitions for recurring automation runs."
+              >
+                <SchedulePanel />
+              </UI.PageShell>
             }
           />
           <Route path="/runs" element={<RunsPage />} />
           <Route
             path="/team"
             element={
-              <PagePlaceholder
+              <UI.PageShell
                 title="Team"
-                description="Team management shell is wired."
-              />
+                description="Role management for multi-user collaboration."
+              >
+                <TeamPanel />
+              </UI.PageShell>
             }
           />
           <Route path="/settings" element={<SettingsPage />} />
