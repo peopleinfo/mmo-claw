@@ -1,3 +1,4 @@
+import { resolve } from "node:path";
 import { spawn, type ChildProcessWithoutNullStreams } from "node:child_process";
 
 import { resolveBundledUvBinaryPath } from "@mmo-claw/uvx-manager";
@@ -15,8 +16,16 @@ export interface PocketpawSupervisor {
   healthCheck: () => Promise<boolean>;
 }
 
-export const createPocketpawSupervisor = (baseDirectory: string): PocketpawSupervisor => {
+export const createPocketpawSupervisor = (
+  baseDirectory: string,
+): PocketpawSupervisor => {
   let currentHandle: PocketpawRuntimeHandle | null = null;
+
+  /** Resolve the upstream submodule directory (Python project root) */
+  const upstreamDir = resolve(
+    baseDirectory,
+    POCKETPAW_FORK_MANIFEST.upstreamSubmodulePath,
+  );
 
   return {
     async start() {
@@ -25,8 +34,10 @@ export const createPocketpawSupervisor = (baseDirectory: string): PocketpawSuper
       }
 
       const uvBinary = resolveBundledUvBinaryPath(baseDirectory);
-      const processHandle = spawn(uvBinary, ["tool", "run", "pocketpaw"], {
-        cwd: baseDirectory,
+      // Run from the upstream submodule source in API-only mode (no dashboard).
+      // `uv run pocketpaw serve` starts the FastAPI server at /api/v1/
+      const processHandle = spawn(uvBinary, ["run", "pocketpaw", "serve"], {
+        cwd: upstreamDir,
       });
 
       currentHandle = {
@@ -55,7 +66,8 @@ export const createPocketpawSupervisor = (baseDirectory: string): PocketpawSuper
       const timeout = setTimeout(() => controller.abort(), 2500);
 
       try {
-        const response = await fetch(POCKETPAW_FORK_MANIFEST.localServiceUrl, {
+        const healthUrl = `${POCKETPAW_FORK_MANIFEST.localServiceUrl}/api/v1/health`;
+        const response = await fetch(healthUrl, {
           method: "GET",
           signal: controller.signal,
         });
