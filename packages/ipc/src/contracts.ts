@@ -3,6 +3,9 @@ import { z } from "zod";
 export const desktopChannels = {
   getHealthSnapshot: "desktop:get-health-snapshot",
   openPocketpaw: "desktop:open-pocketpaw",
+  showPocketpawView: "desktop:show-pocketpaw-view",
+  hidePocketpawView: "desktop:hide-pocketpaw-view",
+  resizePocketpawView: "desktop:resize-pocketpaw-view",
   listRuntimeTools: "desktop:list-runtime-tools",
   installRuntimeTool: "desktop:install-runtime-tool",
   uninstallRuntimeTool: "desktop:uninstall-runtime-tool",
@@ -41,7 +44,14 @@ export type IpcError = z.infer<typeof ipcErrorSchema>;
 export const healthSnapshotSchema = z.object({
   checkedAt: z.string().datetime(),
   pocketpawReachable: z.boolean(),
-  daemonState: z.enum(["idle", "starting", "running", "retrying", "error", "stopped"]),
+  daemonState: z.enum([
+    "idle",
+    "starting",
+    "running",
+    "retrying",
+    "error",
+    "stopped",
+  ]),
   databaseReady: z.boolean(),
   runtimeManagerReady: z.boolean(),
 });
@@ -81,6 +91,31 @@ export const openPocketpawResponseSchema = z.union([
 
 export type OpenPocketpawResponse = z.infer<typeof openPocketpawResponseSchema>;
 
+export const pocketpawViewBoundsSchema = z.object({
+  x: z.number().int(),
+  y: z.number().int(),
+  width: z.number().int().min(1),
+  height: z.number().int().min(1),
+});
+
+export type PocketpawViewBounds = z.infer<typeof pocketpawViewBoundsSchema>;
+
+export const showPocketpawViewRequestSchema = z.object({
+  bounds: pocketpawViewBoundsSchema,
+  url: z.string().url().default("http://127.0.0.1:8888"),
+});
+
+export type ShowPocketpawViewRequest = z.infer<
+  typeof showPocketpawViewRequestSchema
+>;
+
+export const pocketpawViewResponseSchema = z.union([
+  z.object({ ok: z.literal(true) }),
+  z.object({ ok: z.literal(false), error: ipcErrorSchema }),
+]);
+
+export type PocketpawViewResponse = z.infer<typeof pocketpawViewResponseSchema>;
+
 export const runtimeToolIdSchema = z.enum(["camoufox", "pocketpaw-fork"]);
 export type RuntimeToolId = z.infer<typeof runtimeToolIdSchema>;
 
@@ -103,13 +138,17 @@ export const runtimeToolListResponseSchema = z.union([
   }),
 ]);
 
-export type RuntimeToolListResponse = z.infer<typeof runtimeToolListResponseSchema>;
+export type RuntimeToolListResponse = z.infer<
+  typeof runtimeToolListResponseSchema
+>;
 
 export const runtimeToolOperationRequestSchema = z.object({
   toolId: runtimeToolIdSchema,
 });
 
-export type RuntimeToolOperationRequest = z.infer<typeof runtimeToolOperationRequestSchema>;
+export type RuntimeToolOperationRequest = z.infer<
+  typeof runtimeToolOperationRequestSchema
+>;
 
 export const runtimeToolOperationResultSchema = z.object({
   toolId: runtimeToolIdSchema,
@@ -118,7 +157,9 @@ export const runtimeToolOperationResultSchema = z.object({
   command: z.array(z.string()),
 });
 
-export type RuntimeToolOperationResult = z.infer<typeof runtimeToolOperationResultSchema>;
+export type RuntimeToolOperationResult = z.infer<
+  typeof runtimeToolOperationResultSchema
+>;
 
 export const runtimeToolOperationResponseSchema = z.union([
   z.object({
@@ -131,7 +172,9 @@ export const runtimeToolOperationResponseSchema = z.union([
   }),
 ]);
 
-export type RuntimeToolOperationResponse = z.infer<typeof runtimeToolOperationResponseSchema>;
+export type RuntimeToolOperationResponse = z.infer<
+  typeof runtimeToolOperationResponseSchema
+>;
 
 export const secretSettingKeySchema = z.enum(["telegramBotToken", "llmApiKey"]);
 export type SecretSettingKey = z.infer<typeof secretSettingKeySchema>;
@@ -157,20 +200,26 @@ export const secretSettingListResponseSchema = z.union([
   }),
 ]);
 
-export type SecretSettingListResponse = z.infer<typeof secretSettingListResponseSchema>;
+export type SecretSettingListResponse = z.infer<
+  typeof secretSettingListResponseSchema
+>;
 
 export const secretSettingUpsertRequestSchema = z.object({
   key: secretSettingKeySchema,
   value: z.string().min(1).max(4096),
 });
 
-export type SecretSettingUpsertRequest = z.infer<typeof secretSettingUpsertRequestSchema>;
+export type SecretSettingUpsertRequest = z.infer<
+  typeof secretSettingUpsertRequestSchema
+>;
 
 export const secretSettingClearRequestSchema = z.object({
   key: secretSettingKeySchema,
 });
 
-export type SecretSettingClearRequest = z.infer<typeof secretSettingClearRequestSchema>;
+export type SecretSettingClearRequest = z.infer<
+  typeof secretSettingClearRequestSchema
+>;
 
 export const secretSettingMutationResponseSchema = z.union([
   z.object({
@@ -183,7 +232,9 @@ export const secretSettingMutationResponseSchema = z.union([
   }),
 ]);
 
-export type SecretSettingMutationResponse = z.infer<typeof secretSettingMutationResponseSchema>;
+export type SecretSettingMutationResponse = z.infer<
+  typeof secretSettingMutationResponseSchema
+>;
 
 export const chatMessageSourceSchema = z.enum(["drawer", "telegram"]);
 export type ChatMessageSource = z.infer<typeof chatMessageSourceSchema>;
@@ -195,7 +246,9 @@ export const chatSendMessageRequestSchema = z.object({
   source: chatMessageSourceSchema.default("drawer"),
 });
 
-export type ChatSendMessageRequest = z.infer<typeof chatSendMessageRequestSchema>;
+export type ChatSendMessageRequest = z.infer<
+  typeof chatSendMessageRequestSchema
+>;
 
 export const chatSendMessageResultSchema = z.object({
   sessionId: z.string().min(1),
@@ -217,7 +270,9 @@ export const chatSendMessageResponseSchema = z.union([
   }),
 ]);
 
-export type ChatSendMessageResponse = z.infer<typeof chatSendMessageResponseSchema>;
+export type ChatSendMessageResponse = z.infer<
+  typeof chatSendMessageResponseSchema
+>;
 
 const chatStreamEventBaseSchema = z.object({
   sessionId: z.string().min(1),
@@ -254,7 +309,9 @@ export const chatCancelStreamRequestSchema = z.object({
   requestId: z.string().min(1),
 });
 
-export type ChatCancelStreamRequest = z.infer<typeof chatCancelStreamRequestSchema>;
+export type ChatCancelStreamRequest = z.infer<
+  typeof chatCancelStreamRequestSchema
+>;
 
 export const chatCancelStreamResultSchema = z.object({
   sessionId: z.string().min(1),
@@ -262,7 +319,9 @@ export const chatCancelStreamResultSchema = z.object({
   cancelledAt: z.string().datetime(),
 });
 
-export type ChatCancelStreamResult = z.infer<typeof chatCancelStreamResultSchema>;
+export type ChatCancelStreamResult = z.infer<
+  typeof chatCancelStreamResultSchema
+>;
 
 export const chatCancelStreamResponseSchema = z.union([
   z.object({
@@ -275,7 +334,9 @@ export const chatCancelStreamResponseSchema = z.union([
   }),
 ]);
 
-export type ChatCancelStreamResponse = z.infer<typeof chatCancelStreamResponseSchema>;
+export type ChatCancelStreamResponse = z.infer<
+  typeof chatCancelStreamResponseSchema
+>;
 
 export const runStatusSourceSchema = z.enum(["drawer", "telegram", "system"]);
 export type RunStatusSource = z.infer<typeof runStatusSourceSchema>;
@@ -312,6 +373,13 @@ export interface DesktopIpcApi {
   openPocketpaw: (
     request: OpenPocketpawRequest,
   ) => Promise<OpenPocketpawResponse>;
+  showPocketpawView: (
+    request: ShowPocketpawViewRequest,
+  ) => Promise<PocketpawViewResponse>;
+  hidePocketpawView: () => Promise<PocketpawViewResponse>;
+  resizePocketpawView: (
+    bounds: PocketpawViewBounds,
+  ) => Promise<PocketpawViewResponse>;
   listRuntimeTools: () => Promise<RuntimeToolListResponse>;
   installRuntimeTool: (
     request: RuntimeToolOperationRequest,
@@ -332,10 +400,6 @@ export interface DesktopIpcApi {
   cancelChatStream: (
     request: ChatCancelStreamRequest,
   ) => Promise<ChatCancelStreamResponse>;
-  onChatStreamEvent: (
-    listener: (event: ChatStreamEvent) => void,
-  ) => () => void;
-  onRunStatusEvent: (
-    listener: (event: RunStatusEvent) => void,
-  ) => () => void;
+  onChatStreamEvent: (listener: (event: ChatStreamEvent) => void) => () => void;
+  onRunStatusEvent: (listener: (event: RunStatusEvent) => void) => () => void;
 }

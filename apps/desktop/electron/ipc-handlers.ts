@@ -1,7 +1,7 @@
 import fs from "node:fs";
 import path from "node:path";
 
-import { BrowserWindow, app, ipcMain, shell } from "electron";
+import { WebContentsView, BrowserWindow, app, ipcMain, shell } from "electron";
 
 import { checkDatabaseHealth } from "@mmo-claw/db";
 import {
@@ -13,6 +13,9 @@ import {
   healthSnapshotResponseSchema,
   openPocketpawRequestSchema,
   openPocketpawResponseSchema,
+  pocketpawViewBoundsSchema,
+  pocketpawViewResponseSchema,
+  showPocketpawViewRequestSchema,
   secretSettingClearRequestSchema,
   secretSettingListResponseSchema,
   secretSettingMutationResponseSchema,
@@ -35,7 +38,49 @@ import {
   type PocketpawBridge,
 } from "./pocketpaw-bridge";
 import type { PocketpawDaemonManager } from "./pocketpaw-daemon";
-import { createDesktopSecretStore, type DesktopSecretStore } from "./secret-store";
+import {
+  createDesktopSecretStore,
+  type DesktopSecretStore,
+} from "./secret-store";
+
+// Singleton WebContentsView for the embedded PocketPaw dashboard.
+let pocketpawView: WebContentsView | null = null;
+let pocketpawViewWindow: BrowserWindow | null = null;
+let pocketpawViewUrl = "http://127.0.0.1:8888";
+
+const getOrCreatePocketpawView = (url: string): WebContentsView => {
+  // If the URL changed, destroy the old view and load fresh.
+  if (pocketpawView && url !== pocketpawViewUrl) {
+    teardownPocketpawView();
+    pocketpawView.webContents.close();
+    pocketpawView = null;
+  }
+  pocketpawViewUrl = url;
+
+  if (!pocketpawView) {
+    pocketpawView = new WebContentsView({
+      webPreferences: {
+        nodeIntegration: false,
+        contextIsolation: true,
+        sandbox: true,
+      },
+    });
+    void pocketpawView.webContents.loadURL(url);
+  }
+
+  return pocketpawView;
+};
+
+function teardownPocketpawView(): void {
+  if (pocketpawViewWindow && pocketpawView) {
+    try {
+      pocketpawViewWindow.contentView.removeChildView(pocketpawView);
+    } catch {
+      // Window may already be destroyed.
+    }
+  }
+  pocketpawViewWindow = null;
+}
 
 const checkPocketpawReachable = async (baseUrl: string): Promise<boolean> => {
   const controller = new AbortController();
@@ -106,7 +151,8 @@ const validateSecretValue = (
 export const registerDesktopIpcHandlers = (
   dependencies: DesktopIpcHandlerDependencies = {},
 ): PocketpawBridge => {
-  const pocketpawBridge = dependencies.pocketpawBridge ?? createPocketpawBridge();
+  const pocketpawBridge =
+    dependencies.pocketpawBridge ?? createPocketpawBridge();
   const secretStore =
     dependencies.secretStore ??
     createDesktopSecretStore({
@@ -125,19 +171,28 @@ export const registerDesktopIpcHandlers = (
   void pocketpawBridge.start();
 
   ipcMain.handle(desktopChannels.getHealthSnapshot, async () => {
-    const pocketpawReachable = await checkPocketpawReachable("http://127.0.0.1:8888");
+    const pocketpawReachable = await checkPocketpawReachable(
+      "http://127.0.0.1:8888",
+    );
     const databasePath = path.join(app.getPath("userData"), "mmo-claw.sqlite");
     const databaseHealth = checkDatabaseHealth(databasePath);
-    const uvPath = resolveBundledUvBinaryPath(app.getAppPath());
+    // In dev mode the daemon uses the system 'uv' from PATH; in packaged builds
+    // it uses the bundled binary. Mirror that same resolution here so that
+    // runtimeManagerReady correctly reflects uv availability in both modes.
+    const uvPath = app.isPackaged
+      ? resolveBundledUvBinaryPath(app.getAppPath())
+      : "uv";
+    const runtimeManagerReady = uvPath === "uv" || fs.existsSync(uvPath);
 
     return healthSnapshotResponseSchema.parse({
       ok: true,
       data: {
         checkedAt: new Date().toISOString(),
         pocketpawReachable,
-        daemonState: dependencies.pocketpawDaemonManager?.getStatus().state ?? "idle",
+        daemonState:
+          dependencies.pocketpawDaemonManager?.getStatus().state ?? "idle",
         databaseReady: databaseHealth.databaseReady,
-        runtimeManagerReady: fs.existsSync(uvPath),
+        runtimeManagerReady,
       },
     });
   });
@@ -149,13 +204,78 @@ export const registerDesktopIpcHandlers = (
         ok: false,
         error: {
           code: "VALIDATION_ERROR",
-          message: requestResult.error.issues.map((issue) => issue.message).join("; "),
+          message: requestResult.error.issues
+            .map((issue) => issue.message)
+            .join("; "),
         },
       });
     }
 
     await shell.openExternal(requestResult.data.baseUrl);
     return openPocketpawResponseSchema.parse({ ok: true });
+  });
+
+  ipcMain.handle(desktopChannels.showPocketpawView, (_event, payload) => {
+    const request = showPocketpawViewRequestSchema.safeParse(payload);
+    if (!request.success) {
+      return pocketpawViewResponseSchema.parse({
+        ok: false,
+        error: {
+          code: "VALIDATION_ERROR",
+          message: request.error.issues.map((i) => i.message).join("; "),
+        },
+      });
+    }
+
+    const win =
+      BrowserWindow.getFocusedWindow() ?? BrowserWindow.getAllWindows()[0];
+    if (!win) {
+      return pocketpawViewResponseSchema.parse({
+        ok: false,
+        error: { code: "INTERNAL_ERROR", message: "No active window found." },
+      });
+    }
+
+    const view = getOrCreatePocketpawView(request.data.url);
+
+    // Reattach to a new window if necessary.
+    if (pocketpawViewWindow !== win) {
+      teardownPocketpawView();
+      pocketpawViewWindow = win;
+      win.contentView.addChildView(view);
+    }
+
+    const { x, y, width, height } = request.data.bounds;
+    view.setBounds({ x, y, width, height });
+    view.setVisible(true);
+
+    return pocketpawViewResponseSchema.parse({ ok: true });
+  });
+
+  ipcMain.handle(desktopChannels.hidePocketpawView, () => {
+    if (pocketpawView) {
+      pocketpawView.setVisible(false);
+    }
+    return pocketpawViewResponseSchema.parse({ ok: true });
+  });
+
+  ipcMain.handle(desktopChannels.resizePocketpawView, (_event, payload) => {
+    const bounds = pocketpawViewBoundsSchema.safeParse(payload);
+    if (!bounds.success) {
+      return pocketpawViewResponseSchema.parse({
+        ok: false,
+        error: {
+          code: "VALIDATION_ERROR",
+          message: bounds.error.issues.map((i) => i.message).join("; "),
+        },
+      });
+    }
+
+    if (pocketpawView) {
+      const { x, y, width, height } = bounds.data;
+      pocketpawView.setBounds({ x, y, width, height });
+    }
+    return pocketpawViewResponseSchema.parse({ ok: true });
   });
 
   ipcMain.handle(desktopChannels.listRuntimeTools, async () => {
@@ -165,39 +285,53 @@ export const registerDesktopIpcHandlers = (
     });
   });
 
-  ipcMain.handle(desktopChannels.installRuntimeTool, async (_event, payload) => {
-    const request = runtimeToolOperationRequestSchema.safeParse(payload);
-    if (!request.success) {
-      return runtimeToolOperationResponseSchema.parse({
-        ok: false,
-        error: {
-          code: "VALIDATION_ERROR",
-          message: request.error.issues.map((issue) => issue.message).join("; "),
-        },
-      });
-    }
+  ipcMain.handle(
+    desktopChannels.installRuntimeTool,
+    async (_event, payload) => {
+      const request = runtimeToolOperationRequestSchema.safeParse(payload);
+      if (!request.success) {
+        return runtimeToolOperationResponseSchema.parse({
+          ok: false,
+          error: {
+            code: "VALIDATION_ERROR",
+            message: request.error.issues
+              .map((issue) => issue.message)
+              .join("; "),
+          },
+        });
+      }
 
-    const uvPath = resolveBundledUvBinaryPath(app.getAppPath());
-    const plan = createInstallPlan(uvPath, request.data.toolId);
-    return toRuntimeOperationResponse(request.data.toolId, "installed", plan);
-  });
+      const uvPath = resolveBundledUvBinaryPath(app.getAppPath());
+      const plan = createInstallPlan(uvPath, request.data.toolId);
+      return toRuntimeOperationResponse(request.data.toolId, "installed", plan);
+    },
+  );
 
-  ipcMain.handle(desktopChannels.uninstallRuntimeTool, async (_event, payload) => {
-    const request = runtimeToolOperationRequestSchema.safeParse(payload);
-    if (!request.success) {
-      return runtimeToolOperationResponseSchema.parse({
-        ok: false,
-        error: {
-          code: "VALIDATION_ERROR",
-          message: request.error.issues.map((issue) => issue.message).join("; "),
-        },
-      });
-    }
+  ipcMain.handle(
+    desktopChannels.uninstallRuntimeTool,
+    async (_event, payload) => {
+      const request = runtimeToolOperationRequestSchema.safeParse(payload);
+      if (!request.success) {
+        return runtimeToolOperationResponseSchema.parse({
+          ok: false,
+          error: {
+            code: "VALIDATION_ERROR",
+            message: request.error.issues
+              .map((issue) => issue.message)
+              .join("; "),
+          },
+        });
+      }
 
-    const uvPath = resolveBundledUvBinaryPath(app.getAppPath());
-    const plan = createUninstallPlan(uvPath, request.data.toolId);
-    return toRuntimeOperationResponse(request.data.toolId, "uninstalled", plan);
-  });
+      const uvPath = resolveBundledUvBinaryPath(app.getAppPath());
+      const plan = createUninstallPlan(uvPath, request.data.toolId);
+      return toRuntimeOperationResponse(
+        request.data.toolId,
+        "uninstalled",
+        plan,
+      );
+    },
+  );
 
   ipcMain.handle(desktopChannels.listSecretSettings, async () => {
     try {
@@ -227,13 +361,18 @@ export const registerDesktopIpcHandlers = (
         ok: false,
         error: {
           code: "VALIDATION_ERROR",
-          message: request.error.issues.map((issue) => issue.message).join("; "),
+          message: request.error.issues
+            .map((issue) => issue.message)
+            .join("; "),
         },
       });
     }
 
     const trimmedValue = request.data.value.trim();
-    const validationMessage = validateSecretValue(request.data.key, trimmedValue);
+    const validationMessage = validateSecretValue(
+      request.data.key,
+      trimmedValue,
+    );
     if (validationMessage) {
       return secretSettingMutationResponseSchema.parse({
         ok: false,
@@ -267,37 +406,42 @@ export const registerDesktopIpcHandlers = (
     }
   });
 
-  ipcMain.handle(desktopChannels.clearSecretSetting, async (_event, payload) => {
-    const request = secretSettingClearRequestSchema.safeParse(payload);
-    if (!request.success) {
-      return secretSettingMutationResponseSchema.parse({
-        ok: false,
-        error: {
-          code: "VALIDATION_ERROR",
-          message: request.error.issues.map((issue) => issue.message).join("; "),
-        },
-      });
-    }
+  ipcMain.handle(
+    desktopChannels.clearSecretSetting,
+    async (_event, payload) => {
+      const request = secretSettingClearRequestSchema.safeParse(payload);
+      if (!request.success) {
+        return secretSettingMutationResponseSchema.parse({
+          ok: false,
+          error: {
+            code: "VALIDATION_ERROR",
+            message: request.error.issues
+              .map((issue) => issue.message)
+              .join("; "),
+          },
+        });
+      }
 
-    try {
-      const result = await secretStore.clearSecretSetting(request.data.key);
-      return secretSettingMutationResponseSchema.parse({
-        ok: true,
-        data: result,
-      });
-    } catch (error) {
-      return secretSettingMutationResponseSchema.parse({
-        ok: false,
-        error: {
-          code: "SECRET_STORAGE_UNAVAILABLE",
-          message:
-            error instanceof Error && error.message
-              ? error.message
-              : "Failed to clear secret value.",
-        },
-      });
-    }
-  });
+      try {
+        const result = await secretStore.clearSecretSetting(request.data.key);
+        return secretSettingMutationResponseSchema.parse({
+          ok: true,
+          data: result,
+        });
+      } catch (error) {
+        return secretSettingMutationResponseSchema.parse({
+          ok: false,
+          error: {
+            code: "SECRET_STORAGE_UNAVAILABLE",
+            message:
+              error instanceof Error && error.message
+                ? error.message
+                : "Failed to clear secret value.",
+          },
+        });
+      }
+    },
+  );
 
   ipcMain.handle(desktopChannels.sendChatMessage, async (_event, payload) => {
     const request = chatSendMessageRequestSchema.safeParse(payload);
@@ -306,7 +450,9 @@ export const registerDesktopIpcHandlers = (
         ok: false,
         error: {
           code: "VALIDATION_ERROR",
-          message: request.error.issues.map((issue) => issue.message).join("; "),
+          message: request.error.issues
+            .map((issue) => issue.message)
+            .join("; "),
         },
       });
     }
@@ -321,7 +467,9 @@ export const registerDesktopIpcHandlers = (
         ok: false,
         error: {
           code: "VALIDATION_ERROR",
-          message: request.error.issues.map((issue) => issue.message).join("; "),
+          message: request.error.issues
+            .map((issue) => issue.message)
+            .join("; "),
         },
       });
     }

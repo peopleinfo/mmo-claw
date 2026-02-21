@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 
 import type { SecretSetting, SecretSettingKey } from "@mmo-claw/ipc";
-import * as UI from "@mmo-claw/ui";
+import * as UI from "../ui";
 
 const EMPTY_DRAFTS: Record<SecretSettingKey, string> = {
   telegramBotToken: "",
@@ -10,8 +10,11 @@ const EMPTY_DRAFTS: Record<SecretSettingKey, string> = {
 
 export const SettingsPanel = (): JSX.Element => {
   const [entries, setEntries] = useState<SecretSetting[]>([]);
-  const [drafts, setDrafts] = useState<Record<SecretSettingKey, string>>(EMPTY_DRAFTS);
-  const [statusMessage, setStatusMessage] = useState("Loading secret settings...");
+  const [drafts, setDrafts] =
+    useState<Record<SecretSettingKey, string>>(EMPTY_DRAFTS);
+  const [statusMessage, setStatusMessage] = useState(
+    "Loading secret settings...",
+  );
   const [busyKey, setBusyKey] = useState<SecretSettingKey | null>(null);
 
   useEffect(() => {
@@ -31,7 +34,9 @@ export const SettingsPanel = (): JSX.Element => {
 
   const upsertEntry = (nextEntry: SecretSetting): void => {
     setEntries((currentEntries) =>
-      currentEntries.map((entry) => (entry.key === nextEntry.key ? nextEntry : entry)),
+      currentEntries.map((entry) =>
+        entry.key === nextEntry.key ? nextEntry : entry,
+      ),
     );
   };
 

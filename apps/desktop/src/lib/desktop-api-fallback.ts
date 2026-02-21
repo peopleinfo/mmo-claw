@@ -155,9 +155,16 @@ const createBrowserDesktopApi = (): DesktopIpcApi => {
       };
     },
     openPocketpaw: async () => {
-      return {
-        ok: true,
-      };
+      return { ok: true } as const;
+    },
+    showPocketpawView: async () => {
+      return { ok: true } as const;
+    },
+    hidePocketpawView: async () => {
+      return { ok: true } as const;
+    },
+    resizePocketpawView: async () => {
+      return { ok: true } as const;
     },
     listRuntimeTools: async () => {
       return {
@@ -230,8 +237,17 @@ const createBrowserDesktopApi = (): DesktopIpcApi => {
       const correlationId = request.correlationId ?? createId("corr");
       const source = request.source ?? "drawer";
 
-      scheduleMockRunLifecycle(correlationId, source, `Completed ${request.message}`);
-      scheduleMockChatStream(request.sessionId, requestId, correlationId, request.message);
+      scheduleMockRunLifecycle(
+        correlationId,
+        source,
+        `Completed ${request.message}`,
+      );
+      scheduleMockChatStream(
+        request.sessionId,
+        requestId,
+        correlationId,
+        request.message,
+      );
 
       return {
         ok: true,

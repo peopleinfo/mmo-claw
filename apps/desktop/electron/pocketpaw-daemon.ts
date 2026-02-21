@@ -52,7 +52,9 @@ export interface PocketpawDaemonManager {
   stop: () => Promise<void>;
   restart: () => Promise<void>;
   getStatus: () => PocketpawDaemonStatus;
-  setStatusListener: (listener: (status: PocketpawDaemonStatus) => void) => void;
+  setStatusListener: (
+    listener: (status: PocketpawDaemonStatus) => void,
+  ) => void;
 }
 
 const wait = async (delayMs: number): Promise<void> => {
@@ -61,7 +63,9 @@ const wait = async (delayMs: number): Promise<void> => {
   });
 };
 
-const createPocketpawHealthcheck = (healthUrl: string): (() => Promise<boolean>) => {
+const createPocketpawHealthcheck = (
+  healthUrl: string,
+): (() => Promise<boolean>) => {
   return async () => {
     const controller = new AbortController();
     const timeout = setTimeout(() => controller.abort(), 2_000);
@@ -90,7 +94,11 @@ export const createPocketpawDaemonManager = (
     createPocketpawHealthcheck(options.healthUrl ?? DEFAULT_HEALTH_URL);
   const spawnProcess =
     options.spawnProcess ??
-    ((command: string, args: string[], cwd: string): ManagedPocketpawProcess => {
+    ((
+      command: string,
+      args: string[],
+      cwd: string,
+    ): ManagedPocketpawProcess => {
       const processHandle = spawn(command, args, {
         cwd,
         stdio: "ignore",
@@ -99,7 +107,8 @@ export const createPocketpawDaemonManager = (
       processHandle.unref();
       return processHandle;
     });
-  const uvBinaryExists = options.uvBinaryExists ?? fs.existsSync;
+  const uvBinaryExists =
+    options.uvBinaryExists ?? ((path) => path === "uv" || fs.existsSync(path));
   const uvBinaryPath =
     options.uvBinaryPath ?? resolveBundledUvBinaryPath(options.baseDirectory);
 
@@ -160,7 +169,9 @@ export const createPocketpawDaemonManager = (
     }, delayMs);
   };
 
-  const handleManagedProcessClose = (processHandle: ManagedPocketpawProcess): void => {
+  const handleManagedProcessClose = (
+    processHandle: ManagedPocketpawProcess,
+  ): void => {
     processHandle.once("close", () => {
       if (managedProcess !== processHandle) {
         return;
@@ -293,7 +304,8 @@ export const createPocketpawDaemonManager = (
           return;
         }
 
-        const state: PocketpawDaemonState = attempt === 1 ? "starting" : "retrying";
+        const state: PocketpawDaemonState =
+          attempt === 1 ? "starting" : "retrying";
         emitStatus({
           state,
           message: `PocketPaw startup attempt ${attempt}/${startupMaxAttempts}.`,
@@ -410,7 +422,9 @@ export const createPocketpawDaemonManager = (
       await recoverDaemon();
     },
     getStatus: (): PocketpawDaemonStatus => status,
-    setStatusListener: (listener: (status: PocketpawDaemonStatus) => void): void => {
+    setStatusListener: (
+      listener: (status: PocketpawDaemonStatus) => void,
+    ): void => {
       statusListener = listener;
       statusListener(status);
     },

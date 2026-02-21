@@ -1,4 +1,5 @@
-export { Button, buttonVariants } from "./components/button";
+export { Button, buttonVariants } from "./button";
+export type { ButtonProps } from "./button";
 export {
   Card,
   CardHeader,
@@ -6,12 +7,14 @@ export {
   CardDescription,
   CardContent,
   CardFooter,
-} from "./components/card";
-export { Input } from "./components/input";
-export { Label } from "./components/label";
-export { Textarea } from "./components/textarea";
-export { Checkbox } from "./components/checkbox";
-export { Switch } from "./components/switch";
+} from "./card";
+export { Input } from "./input";
+export type { InputProps } from "./input";
+export { Label } from "./label";
+export { Textarea } from "./textarea";
+export type { TextareaProps } from "./textarea";
+export { Checkbox } from "./checkbox";
+export { Switch } from "./switch";
 export {
   Select,
   SelectGroup,
@@ -23,10 +26,10 @@ export {
   SelectSeparator,
   SelectScrollUpButton,
   SelectScrollDownButton,
-} from "./components/select";
-export { Separator } from "./components/separator";
-export { ScrollArea, ScrollBar } from "./components/scroll-area";
-export { Tabs, TabsList, TabsTrigger, TabsContent } from "./components/tabs";
+} from "./select";
+export { Separator } from "./separator";
+export { ScrollArea, ScrollBar } from "./scroll-area";
+export { Tabs, TabsList, TabsTrigger, TabsContent } from "./tabs";
 export {
   Dialog,
   DialogPortal,
@@ -38,7 +41,7 @@ export {
   DialogFooter,
   DialogTitle,
   DialogDescription,
-} from "./components/dialog";
+} from "./dialog";
 export {
   Sheet,
   SheetPortal,
@@ -50,7 +53,7 @@ export {
   SheetFooter,
   SheetTitle,
   SheetDescription,
-} from "./components/sheet";
+} from "./sheet";
 export {
   DropdownMenu,
   DropdownMenuTrigger,
@@ -67,6 +70,7 @@ export {
   DropdownMenuSubContent,
   DropdownMenuSubTrigger,
   DropdownMenuRadioGroup,
-} from "./components/dropdown-menu";
-export { PageShell } from "./components/page-shell";
-export { cn } from "./utils/cn";
+} from "./dropdown-menu";
+export { PageShell } from "./page-shell";
+export type { PageShellProps } from "./page-shell";
+export { cn } from "./cn";

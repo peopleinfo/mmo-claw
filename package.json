@@ -5,6 +5,7 @@
   "packageManager": "pnpm@10.19.0",
   "scripts": {
     "dev": "turbo run dev --parallel",
+    "dev:tron": "pnpm --filter @mmo-claw/desktop run dev",
     "build": "turbo run build",
     "lint": "turbo run lint",
     "test": "turbo run test",

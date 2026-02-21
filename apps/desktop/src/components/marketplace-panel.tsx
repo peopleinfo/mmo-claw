@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 
 import type { RuntimeTool } from "@mmo-claw/ipc";
-import * as UI from "@mmo-claw/ui";
+import * as UI from "../ui";
 
 const renderOperationMessage = (
   toolLabel: string,
@@ -13,7 +13,9 @@ const renderOperationMessage = (
 
 export const MarketplacePanel = (): JSX.Element => {
   const [tools, setTools] = useState<RuntimeTool[]>([]);
-  const [statusMessage, setStatusMessage] = useState("Loading runtime tools...");
+  const [statusMessage, setStatusMessage] = useState(
+    "Loading runtime tools...",
+  );
 
   useEffect(() => {
     const loadTools = async () => {
@@ -40,11 +42,19 @@ export const MarketplacePanel = (): JSX.Element => {
         : await window.desktopApi.uninstallRuntimeTool({ toolId: tool.id });
 
     if (!response.ok) {
-      setStatusMessage(renderOperationMessage(tool.displayName, action, response.error.message));
+      setStatusMessage(
+        renderOperationMessage(
+          tool.displayName,
+          action,
+          response.error.message,
+        ),
+      );
       return;
     }
 
-    setStatusMessage(renderOperationMessage(tool.displayName, action, response.data.message));
+    setStatusMessage(
+      renderOperationMessage(tool.displayName, action, response.data.message),
+    );
   };
 
   return (
@@ -54,8 +64,13 @@ export const MarketplacePanel = (): JSX.Element => {
           <UI.CardTitle>{tool.displayName}</UI.CardTitle>
           <UI.CardDescription>{tool.packageName}</UI.CardDescription>
           <div className="desktop-row">
-            <UI.Button onClick={() => void runAction(tool, "install")}>Install</UI.Button>
-            <UI.Button variant="outline" onClick={() => void runAction(tool, "uninstall")}>
+            <UI.Button onClick={() => void runAction(tool, "install")}>
+              Install
+            </UI.Button>
+            <UI.Button
+              variant="outline"
+              onClick={() => void runAction(tool, "uninstall")}
+            >
               Uninstall
             </UI.Button>
           </div>

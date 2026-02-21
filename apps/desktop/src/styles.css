@@ -386,6 +386,60 @@ body {
   background: #f1f5f9;
 }
 
+.pocketpaw-view-shell {
+  display: grid;
+  grid-template-rows: auto 1fr;
+  height: calc(100vh - 2rem);
+  gap: 0.5rem;
+}
+
+.pocketpaw-view-toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+  padding: 0.4rem 0.6rem;
+  border: 1px solid #cbd5e1;
+  border-radius: 0.5rem;
+  background: #ffffff;
+}
+
+.pocketpaw-view-toolbar__url {
+  font-size: 0.82rem;
+  color: #475569;
+  font-family: monospace;
+}
+
+.pocketpaw-view-toolbar__actions {
+  display: flex;
+  gap: 0.4rem;
+}
+
+.pocketpaw-view-toolbar__btn {
+  border: 1px solid #94a3b8;
+  background: white;
+  border-radius: 0.45rem;
+  padding: 0.25rem 0.55rem;
+  font: inherit;
+  font-size: 0.82rem;
+  cursor: pointer;
+  color: #0f172a;
+}
+
+.pocketpaw-view-toolbar__btn:hover {
+  background: #f1f5f9;
+}
+
+/* The stage div is transparent — the native WebContentsView sits on top of it.
+   It must fill the remaining height so the native view gets accurate bounds. */
+.pocketpaw-view-stage {
+  border: 1px solid #cbd5e1;
+  border-radius: 0.5rem;
+  overflow: hidden;
+  background: transparent;
+  min-height: 400px;
+}
+
 @media (max-width: 900px) {
   .desktop-layout {
     grid-template-columns: 1fr;

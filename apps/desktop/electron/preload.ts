@@ -9,22 +9,32 @@ import {
   type ChatSendMessageRequest,
   type ChatStreamEvent,
   type OpenPocketpawRequest,
+  type PocketpawViewBounds,
   type RunStatusEvent,
   type RuntimeToolOperationRequest,
   type SecretSettingClearRequest,
   type SecretSettingUpsertRequest,
+  type ShowPocketpawViewRequest,
 } from "@mmo-claw/ipc";
 
 const desktopApi: DesktopIpcApi = {
-  getHealthSnapshot: () => ipcRenderer.invoke(desktopChannels.getHealthSnapshot),
+  getHealthSnapshot: () =>
+    ipcRenderer.invoke(desktopChannels.getHealthSnapshot),
   openPocketpaw: (request: OpenPocketpawRequest) =>
     ipcRenderer.invoke(desktopChannels.openPocketpaw, request),
+  showPocketpawView: (request: ShowPocketpawViewRequest) =>
+    ipcRenderer.invoke(desktopChannels.showPocketpawView, request),
+  hidePocketpawView: () =>
+    ipcRenderer.invoke(desktopChannels.hidePocketpawView),
+  resizePocketpawView: (bounds: PocketpawViewBounds) =>
+    ipcRenderer.invoke(desktopChannels.resizePocketpawView, bounds),
   listRuntimeTools: () => ipcRenderer.invoke(desktopChannels.listRuntimeTools),
   installRuntimeTool: (request: RuntimeToolOperationRequest) =>
     ipcRenderer.invoke(desktopChannels.installRuntimeTool, request),
   uninstallRuntimeTool: (request: RuntimeToolOperationRequest) =>
     ipcRenderer.invoke(desktopChannels.uninstallRuntimeTool, request),
-  listSecretSettings: () => ipcRenderer.invoke(desktopChannels.listSecretSettings),
+  listSecretSettings: () =>
+    ipcRenderer.invoke(desktopChannels.listSecretSettings),
   setSecretSetting: (request: SecretSettingUpsertRequest) =>
     ipcRenderer.invoke(desktopChannels.setSecretSetting, request),
   clearSecretSetting: (request: SecretSettingClearRequest) =>

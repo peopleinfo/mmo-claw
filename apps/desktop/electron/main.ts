@@ -143,9 +143,25 @@ const createTray = (): void => {
   updateTrayPresentation();
 };
 
+const gotTheLock = app.requestSingleInstanceLock();
+if (!gotTheLock) {
+  app.quit();
+}
+
+app.on("second-instance", () => {
+  if (mainWindow) {
+    if (mainWindow.isMinimized()) {
+      mainWindow.restore();
+    }
+    mainWindow.show();
+    mainWindow.focus();
+  }
+});
+
 app.whenReady().then(() => {
   pocketpawDaemonManager = createPocketpawDaemonManager({
     baseDirectory: app.getAppPath(),
+    uvBinaryPath: app.isPackaged ? undefined : "uv",
   });
   pocketpawDaemonManager.setStatusListener(() => {
     updateTrayPresentation();
