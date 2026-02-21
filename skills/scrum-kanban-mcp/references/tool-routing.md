@@ -13,10 +13,16 @@
 ## Stories and status flow
 - `scrum_add_card`, `scrum_update_card`, `scrum_delete_card`
 - `scrum_move_card`: Move or reorder a story across lists.
-- `scrum_complete_story`: Fast-path move to done.
+- `scrum_complete_story`: Fast-path move to done (avoid if workflow requires explicit `testing` evidence gate).
 - `scrum_get_stories_by_status`: Query by BMAD status.
 - `scrum_get_story_by_id`: Resolve story by key or UUID.
 - `scrum_get_next_story`: Pull next work item from ready-for-dev.
+
+## Workflow gates
+- Use `scrum_add_list` to create missing `Testing` and `Verified` lists when required by project workflow.
+- Use `scrum_update_card` to enforce story metadata (acceptance criteria and success metrics) before `ready-for-dev`.
+- Use `scrum_move_card` for explicit transitions: `ready-for-dev -> in-progress -> review -> testing -> done -> verified`.
+- Only move to `done` after test evidence is collected (including headless Playwright E2E when required).
 
 ## Locking
 - `scrum_acquire_lock`: Claim a story lock before editing.

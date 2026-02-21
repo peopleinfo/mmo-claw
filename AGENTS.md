@@ -8,14 +8,6 @@
 - Use `SKILLS.md` for skill policy and lifecycle.
 - Use `npx skills` as the canonical skill CLI.
 
-## Document Precedence
-
-- Latest user instruction in chat.
-- `docs/agent.md` for execution contract.
-- `docs/workflow.md` for story lifecycle and stage gates.
-- `docs/project-prd.md` for scope and product intent.
-- `SKILLS.md` for skill routing and usage.
-
 ## Architecture Non-Negotiables
 
 - Modular-first always: organize by bounded domains/features, not by random file type sprawl.

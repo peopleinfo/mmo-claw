@@ -6,7 +6,6 @@ This document defines the delivery workflow for this repository using scrum-kanb
 
 - [AGENTS.md](../AGENTS.md)
 - [SKILLS.md](../SKILLS.md)
-- [docs/agent.md](./agent.md)
 
 ## Stage Order
 
