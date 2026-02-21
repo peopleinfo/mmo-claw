@@ -1,0 +1,16 @@
+{
+  "name": "@mmo-claw/uvx-manager",
+  "version": "0.1.0",
+  "private": true,
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "dev": "pnpm exec tsc -p tsconfig.json --watch",
+    "build": "pnpm exec tsc -p tsconfig.json",
+    "lint": "pnpm exec eslint \"src/**/*.ts\"",
+    "test": "echo No tests yet"
+  },
+  "dependencies": {
+    "zod": "^3.24.2"
+  }
+}

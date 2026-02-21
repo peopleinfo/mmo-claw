@@ -1,0 +1,19 @@
+{
+  "title": "Instagram Poster",
+  "type": "object",
+  "properties": {
+    "profileId": {
+      "type": "string",
+      "title": "Profile ID"
+    },
+    "caption": {
+      "type": "string",
+      "title": "Caption"
+    },
+    "mediaPath": {
+      "type": "string",
+      "title": "Media File Path"
+    }
+  },
+  "required": ["profileId", "caption", "mediaPath"]
+}

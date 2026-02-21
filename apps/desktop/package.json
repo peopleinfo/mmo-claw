@@ -1,0 +1,33 @@
+{
+  "name": "@mmo-claw/desktop",
+  "version": "0.1.0",
+  "private": true,
+  "main": "dist/electron/main.js",
+  "scripts": {
+    "dev": "pnpm run dev:renderer",
+    "dev:renderer": "pnpm exec vite",
+    "dev:electron": "pnpm exec tsc -p tsconfig.main.json --watch",
+    "build": "pnpm run build:main && pnpm run build:renderer",
+    "build:main": "pnpm exec tsc -p tsconfig.main.json",
+    "build:renderer": "pnpm exec vite build",
+    "lint": "pnpm exec eslint \"electron/**/*.ts\" \"src/**/*.{ts,tsx}\" \"vite.config.ts\"",
+    "test": "pnpm exec vitest run src/lib/routes.test.ts"
+  },
+  "dependencies": {
+    "@mmo-claw/db": "workspace:*",
+    "@mmo-claw/ipc": "workspace:*",
+    "@mmo-claw/ui": "workspace:*",
+    "@mmo-claw/uvx-manager": "workspace:*",
+    "electron": "^34.5.8",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "react-router-dom": "^6.30.1",
+    "zustand": "^5.0.8"
+  },
+  "devDependencies": {
+    "@types/react": "^18.3.12",
+    "@types/react-dom": "^18.3.1",
+    "@vitejs/plugin-react": "^4.3.4",
+    "vite": "^6.2.0"
+  }
+}

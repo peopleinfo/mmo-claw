@@ -1,0 +1,26 @@
+{
+  "name": "mmo-claw",
+  "version": "0.1.0",
+  "private": true,
+  "packageManager": "pnpm@10.19.0",
+  "scripts": {
+    "dev": "turbo run dev --parallel",
+    "build": "turbo run build",
+    "lint": "turbo run lint",
+    "test": "turbo run test",
+    "workspaces": "pnpm -r --depth -1 list",
+    "smoke": "pnpm run workspaces && pnpm run build && pnpm run lint && pnpm run test",
+    "bundle:uv": "node scripts/bundle-uv-binaries.mjs"
+  },
+  "devDependencies": {
+    "@eslint/js": "^9.21.0",
+    "@types/node": "^22.13.10",
+    "@typescript-eslint/eslint-plugin": "^8.25.0",
+    "@typescript-eslint/parser": "^8.25.0",
+    "eslint": "^9.21.0",
+    "globals": "^16.0.0",
+    "turbo": "^2.5.8",
+    "typescript": "^5.7.3",
+    "vitest": "^3.0.8"
+  }
+}

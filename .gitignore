@@ -3,3 +3,12 @@
 .agent/
 .trae/
 skills-lock.json
+
+# Node / Turborepo
+node_modules/
+.pnpm-store/
+.turbo/
+
+# Build outputs
+dist/
+coverage/
