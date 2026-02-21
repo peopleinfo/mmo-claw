@@ -1,6 +1,6 @@
 import path from "node:path";
 
-import { BrowserWindow, Menu, Tray, app } from "electron";
+import { BrowserWindow, Menu, Tray, app, nativeImage } from "electron";
 
 import { registerDesktopIpcHandlers } from "./ipc-handlers";
 import type { PocketpawBridge } from "./pocketpaw-bridge";
@@ -46,7 +46,9 @@ const updateTrayPresentation = (): void => {
   }
 
   const daemonStatus = pocketpawDaemonManager?.getStatus();
-  const daemonLabel = daemonStatus ? formatDaemonState(daemonStatus.state) : "Idle";
+  const daemonLabel = daemonStatus
+    ? formatDaemonState(daemonStatus.state)
+    : "Idle";
   const daemonMessage = daemonStatus?.message ?? "Daemon status unavailable.";
 
   tray.setToolTip(`MMO Claw | PocketPaw: ${daemonLabel}`);
@@ -93,23 +95,32 @@ const createMainWindow = (): BrowserWindow => {
     height: 900,
     minWidth: 1100,
     minHeight: 720,
-    show: false,
+    show: true,
     webPreferences: {
       preload: path.join(__dirname, "preload.js"),
       nodeIntegration: false,
       contextIsolation: true,
+      sandbox: false,
     },
   });
 
-  const rendererIndexPath = path.join(__dirname, "..", "renderer", "index.html");
-  if (process.env.VITE_DEV_SERVER_URL) {
-    void windowInstance.loadURL(process.env.VITE_DEV_SERVER_URL);
+  const rendererIndexPath = path.join(
+    __dirname,
+    "..",
+    "renderer",
+    "index.html",
+  );
+  if (!app.isPackaged) {
+    void windowInstance.loadURL(
+      process.env.VITE_DEV_SERVER_URL || "http://localhost:5173",
+    );
   } else {
     void windowInstance.loadFile(rendererIndexPath);
   }
 
   windowInstance.once("ready-to-show", () => {
     windowInstance.show();
+    windowInstance.webContents.openDevTools();
   });
 
   windowInstance.on("close", (event) => {
@@ -127,7 +138,8 @@ const createTray = (): void => {
     return;
   }
 
-  tray = new Tray(process.execPath);
+  const emptyIcon = nativeImage.createEmpty();
+  tray = new Tray(emptyIcon);
   updateTrayPresentation();
 };
 

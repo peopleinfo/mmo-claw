@@ -14,3 +14,8 @@ dist/
 coverage/
 playwright-report/
 test-results/
+out.txt
+apps/desktop/electron-out.txt
+apps/desktop/error.log
+electron_out**
+electron-screenshot.png
