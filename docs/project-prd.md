@@ -1,4 +1,4 @@
-# 🕹️ Project Draft v2 — AI-Driven Content Creator & MMO Automation Platform
+# 🕹️ Project prd v2 — AI-Driven Content Creator & MMO Automation Platform
 
 > **One-liner:** Self-hosted desktop app where content creators and MMO players run AI-driven browser actors, controllable 24/7 via Telegram, with anti-detect browsers, team profiles, and proxy management. Open source alternative to AdsPower + openclaw + Apify — combined, not rebuilt.
 
@@ -8,7 +8,7 @@
 
 ```
 Content creators run AI-driven browser actors
-controllable 24/7 via Telegram
+controllable 24/7 via Telegram or Application interface
 with anti-detect browser, team profiles & proxy management
 Python tools installable built-in — no technical setup required
 ```

@@ -81,9 +81,15 @@ importers:
 
   apps/pocketpaw:
     dependencies:
+      '@mmo-claw/actors':
+        specifier: workspace:*
+        version: link:../../packages/actors
       '@mmo-claw/uvx-manager':
         specifier: workspace:*
         version: link:../../packages/uvx-manager
+      zod:
+        specifier: ^3.24.2
+        version: 3.25.76
 
   packages/actors:
     dependencies:

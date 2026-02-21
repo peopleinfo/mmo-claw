@@ -19,3 +19,8 @@ export const listActorDefinitions = (): ActorDefinition[] => {
 };
 
 export { runInstagramPosterActor };
+export type { ActorRunResult, InstagramPosterActorDependencies } from "./instagram-poster/actor";
+export type {
+  InstagramPosterInput,
+  ParsedInstagramPosterInput,
+} from "./instagram-poster/input-schema";

@@ -8,7 +8,7 @@
     "dev": "pnpm exec tsc -p tsconfig.json --watch",
     "build": "pnpm exec tsc -p tsconfig.json",
     "lint": "pnpm exec eslint \"src/**/*.ts\"",
-    "test": "echo No tests yet"
+    "test": "pnpm exec vitest run src/instagram-poster/actor.test.ts"
   },
   "dependencies": {
     "@mmo-claw/browser": "workspace:*",

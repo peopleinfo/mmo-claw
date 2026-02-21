@@ -13,6 +13,22 @@
     "mediaPath": {
       "type": "string",
       "title": "Media File Path"
+    },
+    "provider": {
+      "type": "string",
+      "title": "Browser Provider",
+      "default": "camoufox",
+      "enum": ["camoufox", "playwright-stealth", "puppeteer-stealth", "playwright-vanilla"]
+    },
+    "headless": {
+      "type": "boolean",
+      "title": "Headless Mode",
+      "default": true
+    },
+    "startUrl": {
+      "type": "string",
+      "title": "Start URL",
+      "default": "https://www.instagram.com"
     }
   },
   "required": ["profileId", "caption", "mediaPath"]

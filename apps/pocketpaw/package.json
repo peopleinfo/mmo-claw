@@ -8,9 +8,11 @@
     "dev": "pnpm exec tsc -p tsconfig.json --watch",
     "build": "pnpm exec tsc -p tsconfig.json",
     "lint": "pnpm exec eslint \"src/**/*.ts\"",
-    "test": "echo No tests yet"
+    "test": "pnpm exec vitest run src/skills/instagram-poster-skill.test.ts src/telegram-flow.test.ts"
   },
   "dependencies": {
-    "@mmo-claw/uvx-manager": "workspace:*"
+    "@mmo-claw/actors": "workspace:*",
+    "@mmo-claw/uvx-manager": "workspace:*",
+    "zod": "^3.24.2"
   }
 }
