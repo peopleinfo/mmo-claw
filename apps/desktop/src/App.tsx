@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { NavLink, Route, Routes, useLocation } from "react-router-dom";
 
 import * as UI from "./ui";
@@ -160,7 +160,15 @@ const PocketpawPage = (): JSX.Element => {
   return <PocketpawView />;
 };
 
-const AppNavigation = (): JSX.Element => {
+interface AppNavigationProps {
+  collapsed: boolean;
+  onToggleCollapsed: () => void;
+}
+
+const AppNavigation = ({
+  collapsed,
+  onToggleCollapsed,
+}: AppNavigationProps): JSX.Element => {
   const location = useLocation();
   const setSelectedPath = useShellStore((state) => state.setSelectedPath);
 
@@ -170,7 +178,20 @@ const AppNavigation = (): JSX.Element => {
 
   return (
     <aside className="desktop-nav">
-      <h2 className="desktop-nav__title">MMO Claw</h2>
+      <div className="desktop-nav__header">
+        <h2 className="desktop-nav__title">
+          {collapsed ? "MC" : "MMO Claw"}
+        </h2>
+        <button
+          type="button"
+          className="desktop-nav__toggle"
+          onClick={onToggleCollapsed}
+          aria-label={collapsed ? "Expand menu" : "Collapse menu"}
+          title={collapsed ? "Expand menu" : "Collapse menu"}
+        >
+          {collapsed ? ">" : "<"}
+        </button>
+      </div>
       <ul className="desktop-nav__list">
         {desktopPages.map((page) => (
           <li key={page.path}>
@@ -180,8 +201,12 @@ const AppNavigation = (): JSX.Element => {
               className={({ isActive }) =>
                 isActive ? "desktop-nav__link is-active" : "desktop-nav__link"
               }
+              title={collapsed ? page.label : undefined}
             >
-              {page.label}
+              <span className="desktop-nav__abbr" aria-hidden="true">
+                {page.label.slice(0, 1).toUpperCase()}
+              </span>
+              <span className="desktop-nav__label">{page.label}</span>
             </NavLink>
           </li>
         ))}
@@ -195,6 +220,7 @@ export const App = (): JSX.Element => {
   const chatDrawerOpen = useShellStore((state) => state.chatDrawerOpen);
   const setChatDrawerOpen = useShellStore((state) => state.setChatDrawerOpen);
   const toggleChatDrawer = useShellStore((state) => state.toggleChatDrawer);
+  const [navCollapsed, setNavCollapsed] = useState(false);
 
   useEffect(() => {
     return window.desktopApi.onRunStatusEvent((event) => {
@@ -202,13 +228,20 @@ export const App = (): JSX.Element => {
     });
   }, [appendRunEvent]);
 
+  const layoutClassName = [
+    "desktop-layout",
+    chatDrawerOpen ? "has-chat-drawer" : "",
+    navCollapsed ? "is-nav-collapsed" : "",
+  ]
+    .filter(Boolean)
+    .join(" ");
+
   return (
-    <div
-      className={
-        chatDrawerOpen ? "desktop-layout has-chat-drawer" : "desktop-layout"
-      }
-    >
-      <AppNavigation />
+    <div className={layoutClassName}>
+      <AppNavigation
+        collapsed={navCollapsed}
+        onToggleCollapsed={() => setNavCollapsed((current) => !current)}
+      />
       <section className="desktop-content">
         <Routes>
           <Route path="/" element={<DashboardPage />} />

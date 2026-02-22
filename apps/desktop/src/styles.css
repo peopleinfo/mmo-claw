@@ -28,6 +28,14 @@ body {
   grid-template-columns: 240px 1fr 380px;
 }
 
+.desktop-layout.is-nav-collapsed {
+  grid-template-columns: 72px 1fr;
+}
+
+.desktop-layout.has-chat-drawer.is-nav-collapsed {
+  grid-template-columns: 72px 1fr 380px;
+}
+
 .desktop-content {
   padding: 1rem;
 }
@@ -38,10 +46,34 @@ body {
   background: rgba(255, 255, 255, 0.9);
 }
 
-.desktop-nav__title {
-  margin-top: 0;
+.desktop-nav__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
   margin-bottom: 1rem;
+}
+
+.desktop-nav__title {
+  margin: 0;
   font-size: 1.1rem;
+}
+
+.desktop-nav__toggle {
+  border: 1px solid #94a3b8;
+  background: #ffffff;
+  border-radius: 0.45rem;
+  width: 1.8rem;
+  height: 1.8rem;
+  line-height: 1;
+  padding: 0;
+  font: inherit;
+  color: #0f172a;
+  cursor: pointer;
+}
+
+.desktop-nav__toggle:hover {
+  background: #f1f5f9;
 }
 
 .desktop-nav__list {
@@ -53,11 +85,32 @@ body {
 }
 
 .desktop-nav__link {
-  display: block;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
   padding: 0.45rem 0.6rem;
   border-radius: 0.45rem;
   text-decoration: none;
   color: #0f172a;
+  white-space: nowrap;
+  overflow: hidden;
+}
+
+.desktop-nav__abbr {
+  display: none;
+  width: 1.3rem;
+  height: 1.3rem;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.72rem;
+  border: 1px solid #cbd5e1;
+  border-radius: 0.35rem;
+  background: #f8fafc;
+}
+
+.desktop-nav__label {
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .desktop-nav__link:hover {
@@ -67,6 +120,36 @@ body {
 .desktop-nav__link.is-active {
   background: #bfdbfe;
   font-weight: 600;
+}
+
+.desktop-layout.is-nav-collapsed .desktop-nav {
+  padding: 0.75rem 0.35rem;
+}
+
+.desktop-layout.is-nav-collapsed .desktop-nav__header {
+  flex-direction: column;
+  margin-bottom: 0.75rem;
+}
+
+.desktop-layout.is-nav-collapsed .desktop-nav__title {
+  font-size: 0.8rem;
+}
+
+.desktop-layout.is-nav-collapsed .desktop-nav__toggle {
+  width: 100%;
+}
+
+.desktop-layout.is-nav-collapsed .desktop-nav__link {
+  justify-content: center;
+  padding: 0.45rem 0.2rem;
+}
+
+.desktop-layout.is-nav-collapsed .desktop-nav__abbr {
+  display: inline-flex;
+}
+
+.desktop-layout.is-nav-collapsed .desktop-nav__label {
+  display: none;
 }
 
 .desktop-row {
@@ -449,9 +532,38 @@ body {
     grid-template-columns: 1fr;
   }
 
+  .desktop-layout.is-nav-collapsed {
+    grid-template-columns: 1fr;
+  }
+
+  .desktop-layout.has-chat-drawer.is-nav-collapsed {
+    grid-template-columns: 1fr;
+  }
+
   .desktop-nav {
     border-right: 0;
     border-bottom: 1px solid #cbd5e1;
+  }
+
+  .desktop-layout.is-nav-collapsed .desktop-nav__header {
+    flex-direction: row;
+  }
+
+  .desktop-layout.is-nav-collapsed .desktop-nav__toggle {
+    width: 1.8rem;
+  }
+
+  .desktop-layout.is-nav-collapsed .desktop-nav__abbr {
+    display: none;
+  }
+
+  .desktop-layout.is-nav-collapsed .desktop-nav__label {
+    display: inline;
+  }
+
+  .desktop-layout.is-nav-collapsed .desktop-nav__link {
+    justify-content: flex-start;
+    padding: 0.45rem 0.6rem;
   }
 
   .desktop-chat-drawer {

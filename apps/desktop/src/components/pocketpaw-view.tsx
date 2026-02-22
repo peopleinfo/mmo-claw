@@ -3,21 +3,19 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import { POCKETPAW_API_DOCS_URL, POCKETPAW_VIEW_URL } from "../lib/pocketpaw";
 
 /**
- * Compute the bounds of an element relative to the native window's (0,0) origin,
- * accounting for devicePixelRatio so the WebContentsView aligns perfectly on
- * HiDPI displays.
+ * Compute bounds in CSS pixels (DIP). Electron WebContentsView#setBounds
+ * also uses DIP, so we must not apply devicePixelRatio scaling.
  */
 const getElementWindowBounds = (
   el: HTMLElement,
 ): { x: number; y: number; width: number; height: number } => {
   const rect = el.getBoundingClientRect();
-  const dpr = window.devicePixelRatio ?? 1;
 
   return {
-    x: Math.round(rect.left * dpr),
-    y: Math.round(rect.top * dpr),
-    width: Math.round(rect.width * dpr),
-    height: Math.round(rect.height * dpr),
+    x: Math.round(rect.left),
+    y: Math.round(rect.top),
+    width: Math.round(rect.width),
+    height: Math.round(rect.height),
   };
 };
 

@@ -43,10 +43,41 @@ import {
   type DesktopSecretStore,
 } from "./secret-store";
 
+const DEFAULT_POCKETPAW_BASE_URL = "http://127.0.0.1:8888";
+
 // Singleton WebContentsView for the embedded PocketPaw dashboard.
 let pocketpawView: WebContentsView | null = null;
 let pocketpawViewWindow: BrowserWindow | null = null;
-let pocketpawViewUrl = "http://127.0.0.1:8888";
+let pocketpawViewUrl = DEFAULT_POCKETPAW_BASE_URL;
+
+const normalizePocketpawBaseUrl = (value?: string): string => {
+  if (!value) {
+    return DEFAULT_POCKETPAW_BASE_URL;
+  }
+
+  try {
+    const parsed = new URL(value);
+    if (parsed.protocol !== "http:" && parsed.protocol !== "https:") {
+      return DEFAULT_POCKETPAW_BASE_URL;
+    }
+
+    parsed.pathname = "/";
+    parsed.search = "";
+    parsed.hash = "";
+    return parsed.toString().replace(/\/$/, "");
+  } catch {
+    return DEFAULT_POCKETPAW_BASE_URL;
+  }
+};
+
+const toPocketpawWsUrl = (baseUrl: string): string => {
+  const wsUrl = new URL(baseUrl);
+  wsUrl.protocol = wsUrl.protocol === "https:" ? "wss:" : "ws:";
+  wsUrl.pathname = "/ws";
+  wsUrl.search = "";
+  wsUrl.hash = "";
+  return wsUrl.toString();
+};
 
 const getOrCreatePocketpawView = (url: string): WebContentsView => {
   // If the URL changed, destroy the old view and load fresh.
@@ -127,6 +158,7 @@ const toRuntimeOperationResponse = (
 export interface DesktopIpcHandlerDependencies {
   pocketpawBridge?: PocketpawBridge;
   pocketpawDaemonManager?: PocketpawDaemonManager;
+  pocketpawBaseUrl?: string;
   secretStore?: DesktopSecretStore;
 }
 
@@ -152,8 +184,21 @@ const validateSecretValue = (
 export const registerDesktopIpcHandlers = (
   dependencies: DesktopIpcHandlerDependencies = {},
 ): PocketpawBridge => {
+  const pocketpawBaseUrl = normalizePocketpawBaseUrl(
+    dependencies.pocketpawBaseUrl ??
+      process.env.VITE_POCKETPAW_BASE_URL ??
+      process.env.MMO_CLAW_POCKETPAW_BASE_URL,
+  );
+  const pocketpawHealthUrl = new URL(
+    "/api/v1/health",
+    `${pocketpawBaseUrl}/`,
+  ).toString();
   const pocketpawBridge =
-    dependencies.pocketpawBridge ?? createPocketpawBridge();
+    dependencies.pocketpawBridge ??
+    createPocketpawBridge({
+      wsUrl: toPocketpawWsUrl(pocketpawBaseUrl),
+      healthUrl: pocketpawHealthUrl,
+    });
   const secretStore =
     dependencies.secretStore ??
     createDesktopSecretStore({
@@ -172,9 +217,7 @@ export const registerDesktopIpcHandlers = (
   void pocketpawBridge.start();
 
   ipcMain.handle(desktopChannels.getHealthSnapshot, async () => {
-    const pocketpawReachable = await checkPocketpawReachable(
-      "http://127.0.0.1:8888",
-    );
+    const pocketpawReachable = await checkPocketpawReachable(pocketpawBaseUrl);
     const databasePath = path.join(app.getPath("userData"), "mmo-claw.sqlite");
     const databaseHealth = checkDatabaseHealth(databasePath);
     // In dev mode the daemon uses the system 'uv' from PATH; in packaged builds
