@@ -7,7 +7,7 @@
     "dev": "pnpm run dev:renderer",
     "dev:renderer": "pnpm exec vite",
     "dev:electron": "pnpm exec tsc -p tsconfig.main.json --watch",
-    "start": "electron .",
+    "start": "electron dist/electron/main.js",
     "build": "pnpm run build:main && pnpm run build:renderer",
     "build:main": "pnpm exec tsc -p tsconfig.main.json",
     "build:renderer": "pnpm exec vite build",

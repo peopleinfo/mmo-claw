@@ -25,6 +25,9 @@ export default defineConfig({
     electron([
       {
         entry: "electron/main.ts",
+        onstart(options) {
+          void options.startup(["dist/electron/main.js", "--no-sandbox"]);
+        },
         vite: {
           resolve: { alias: resolveAlias },
           build: {

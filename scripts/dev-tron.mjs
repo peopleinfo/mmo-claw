@@ -133,7 +133,7 @@ const run = async () => {
   console.log(`[dev:tron] Starting PocketPaw dashboard on ${baseUrl} ...`);
   const pocketpawChild = spawnChild(
     "uv",
-    ["run", "pocketpaw", "--host", host, "--port", `${port}`],
+    ["run", "pocketpaw", "--dev", "--host", host, "--port", `${port}`],
     POCKETPAW_UPSTREAM_DIR,
     createChildEnv(),
   );
